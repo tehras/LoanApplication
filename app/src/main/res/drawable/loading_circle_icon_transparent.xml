@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="oval">
+
+            <size
+                android:width="120dp"
+                android:height="120dp" />
+        </shape>
+
+    </item>
+    <item
+        android:bottom="12dp"
+        android:drawable="@drawable/ic_trending_up"
+        android:left="12dp"
+        android:right="12dp"
+        android:top="12dp" />
+
+</layer-list>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Loan Calculator</string>
+    <string name="title_activity_loan">HomeActivity</string>
+    <string name="empty_view">Empty View</string>
+    <string name="no_data_found">No Data Found</string>
+
+    <string name="list_error_no_network">No Network Available</string>
+    <string name="list_error_no_loans">Error Retrieving Loans</string>
+    <string name="retry">Retry</string>
+    <string name="loading_icon">Loading Icon</string>
+    <string name="loan_name">Loan Name</string>
+    <string name="loan_amount">Loan Amount</string>
+    <string name="total_balance">Current Balance</string>
+    <string name="loans_title">Loan Accounts</string>
+    <string name="refresh_icon">refresh icon</string>
+    <string name="sheet_provider">Provider</string>
+    <string name="sheet_balance">Balance</string>
+    <string name="sheet_interest">Interest</string>
+    <string name="sheet_base_payment">Base Payment</string>
+    <string name="sheet_extra_payment">Extra Payment</string>
+    <string name="sheet_repayment_start_date">Repayment Start Date</string>
+</resources>

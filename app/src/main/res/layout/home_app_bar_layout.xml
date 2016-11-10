@@ -1,0 +1,48 @@
+<android.support.design.widget.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/appbar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    app:elevation="0dp"
+    tools:context=".ui.home.HomeLoanActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:paddingBottom="64dp"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+        <TextView
+            android:id="@+id/home_loan_total_balance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            tools:text="$204,000" />
+
+        <TextView
+            style="@style/LabelTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/total_balance"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+
+    <com.github.tehras.loanapplication.ui.home.HomePaymentsChartLayout
+        android:id="@+id/home_payment_chart_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-80dp"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed" />
+
+</android.support.design.widget.AppBarLayout>

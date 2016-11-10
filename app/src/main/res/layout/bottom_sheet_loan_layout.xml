@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loan_sheet_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_gradients"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingEnd="@dimen/activity_horizontal_margin"
+    android:paddingStart="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+    <RelativeLayout
+        android:id="@+id/loan_sheet_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/loan_sheet_name"
+            style="@style/BottomSheetDialogHeaderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:ignore="RelativeOverlap"
+            tools:text="App Name" />
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="end"
+            android:contentDescription="@string/refresh_icon"
+            android:gravity="end"
+            android:src="@drawable/ic_edit_icon_white" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/loan_sheet_chart"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:paddingTop="@dimen/activity_vertical_margin" />
+
+        <include
+            android:id="@+id/loading_layout"
+            layout="@layout/loader_view"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerInParent="true" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/BottomSheetDialogLabelText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sheet_provider" />
+
+            <TextView
+                style="@style/BottomSheetDialogLabelText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sheet_balance" />
+
+            <TextView
+                style="@style/BottomSheetDialogLabelText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sheet_interest" />
+
+            <TextView
+                style="@style/BottomSheetDialogLabelText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sheet_base_payment" />
+
+            <TextView
+                style="@style/BottomSheetDialogLabelText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sheet_extra_payment" />
+
+            <TextView
+                style="@style/BottomSheetDialogLabelText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sheet_repayment_start_date" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/loan_sheet_provider"
+                style="@style/BottomSheetDialogValueText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="Chase" />
+
+            <TextView
+                android:id="@+id/loan_sheet_balance"
+                style="@style/BottomSheetDialogValueText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="$24,000" />
+
+            <TextView
+                android:id="@+id/loan_sheet_interest"
+                style="@style/BottomSheetDialogValueText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="6.32%" />
+
+            <TextView
+                android:id="@+id/loan_sheet_base_payment"
+                style="@style/BottomSheetDialogValueText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="$200.00" />
+
+            <TextView
+                android:id="@+id/loan_sheet_extra_payment"
+                style="@style/BottomSheetDialogValueText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="$25.33" />
+
+            <TextView
+                android:id="@+id/loan_sheet_start_date"
+                style="@style/BottomSheetDialogValueText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="March 20th 1991" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
