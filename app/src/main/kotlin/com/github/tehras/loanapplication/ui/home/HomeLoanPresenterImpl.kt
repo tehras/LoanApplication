@@ -25,16 +25,16 @@ class HomeLoanPresenterImpl @Inject constructor(private val apiService: LoanApiS
 
     override fun showLoanBottomSheet(loan: Loan, activity: HomeLoanActivity) {
         activity.supportFragmentManager.beginTransaction().add(HomeLoanBottomSheetDialog.getInstance(loan), HomeLoanBottomSheetDialog::class.java.simpleName).commit()
-//        HomeLoanBottomSheetDialog.getInstance(loan).show(activity.supportFragmentManager, HomeLoanBottomSheetDialog::class.java.simpleName)
     }
 
     private var subscription: Subscription = Subscriptions.unsubscribed()
 
-    override fun getLoans() {
+    override fun getLoans(showLoading: Boolean) {
         Timber.d("trying to retrieve loans")
         subscription.unsubscribe() // Unsubscribe from any current running request
 
-        view?.startLoading() //show loading
+        if (showLoading)
+            view?.startLoading() //show loading
 
         val loanSearch = apiService.loanSearch()
                 .toObservable().compose(deliverFirst<ArrayList<Loan>>())

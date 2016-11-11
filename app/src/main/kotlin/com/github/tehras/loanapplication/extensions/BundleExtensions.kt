@@ -13,3 +13,7 @@ fun <T : Parcelable> Bundle.getSafeParcelable(bunldeId: String): T? {
     }
     return null
 }
+
+val EXTRA_X_COORDINATE = "ext_x_coordinate"
+val EXTRA_Y_COORDINATE = "ext_y_coordinate"
+val EXTRA_RADIUS_COORDINATE = "ext_radisu_coordinate"

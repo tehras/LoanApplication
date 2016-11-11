@@ -30,6 +30,8 @@ data class Loan(
         @SerializedName("RepaymentStartDate")
         var repaymentStartDate: String
 ) : PaperParcelable {
+    constructor() : this("", "", "", 0.toDouble(), 0.toDouble(), 0.toDouble(), 0.toDouble(), "")
+
     companion object {
         @JvmField val CREATOR = PaperParcelable.Creator(Loan::class.java)
     }

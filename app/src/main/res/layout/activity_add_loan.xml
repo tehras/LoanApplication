@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        app:layout_scrollFlags="enterAlways"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:title="New Loan"
+        app:titleTextColor="@android:color/white" />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/add_loan_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroundColor" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_loan_next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_icon_next"
+            app:fabSize="normal"
+            app:layout_anchorGravity="bottom|right|end" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/add_loan_prev_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_icon_prev"
+            app:backgroundTint="@color/colorRed"
+            app:fabSize="normal"
+            app:layout_anchorGravity="bottom|start|left" />
+
+        <include layout="@layout/loading_view" />
+
+    </android.support.design.widget.CoordinatorLayout>
+</LinearLayout>

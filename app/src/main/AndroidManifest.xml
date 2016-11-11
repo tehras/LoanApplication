@@ -22,6 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.addloan.AddLoanActivity"
+            android:label="@string/title_activity_add_loan"
+            android:theme="@style/Theme.Transparent" />
     </application>
 
 </manifest>

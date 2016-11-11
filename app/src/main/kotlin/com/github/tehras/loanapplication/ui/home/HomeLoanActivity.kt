@@ -1,5 +1,6 @@
 package com.github.tehras.loanapplication.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -8,6 +9,7 @@ import com.github.tehras.loanapplication.R
 import com.github.tehras.loanapplication.data.remote.models.Loan
 import com.github.tehras.loanapplication.data.remote.models.PaymentsResponse
 import com.github.tehras.loanapplication.extensions.*
+import com.github.tehras.loanapplication.ui.addloan.AddLoanActivity
 import com.github.tehras.loanapplication.ui.base.PresenterActivity
 import kotlinx.android.synthetic.main.activity_loan.*
 import kotlinx.android.synthetic.main.empty_view.*
@@ -16,6 +18,7 @@ import kotlinx.android.synthetic.main.loading_view.*
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
+
 
 class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), HomeLoanView {
     var payments: PaymentsResponse? = null
@@ -72,6 +75,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
     lateinit var layoutManager: LinearLayoutManager
     @Inject
     lateinit var adapter: HomeLoanListAdapter
+    private var firstLoad: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +88,14 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
     }
 
     private fun setupFab() {
-        home_add_button.setOnClickListener { } //todo on click listener
+        home_add_button.setOnClickListener {
+            val intent = Intent(this, AddLoanActivity::class.java)
+            intent.putExtra(EXTRA_X_COORDINATE, (home_add_button.left + home_add_button.right) / 2)
+            intent.putExtra(EXTRA_Y_COORDINATE, (home_add_button.top + home_add_button.bottom) / 2)
+            intent.putExtra(EXTRA_RADIUS_COORDINATE, home_add_button.right - home_add_button.left)
+
+            startActivity(intent)
+        }
     }
 
     override fun onStart() {
@@ -94,7 +105,8 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
     }
 
     private fun refreshData() {
-        presenter.getLoans()
+        presenter.getLoans(firstLoad)
+        firstLoad = false
     }
 
     private fun setupRecyclerView() {
@@ -118,7 +130,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
             empty_view_text.text = error
             if (b) {
                 empty_view_retry_button.visibility = View.VISIBLE
-                empty_view_retry_button.setOnClickListener { presenter.getLoans() }
+                empty_view_retry_button.setOnClickListener { presenter.getLoans(true) }
             } else {
                 empty_view_retry_button.visibility = View.GONE
             }

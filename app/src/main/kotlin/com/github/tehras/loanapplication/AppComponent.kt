@@ -2,6 +2,10 @@ package com.github.tehras.loanapplication
 
 import com.github.tehras.loanapplication.data.network.NetworkModule
 import com.github.tehras.loanapplication.data.remote.ApiModule
+import com.github.tehras.loanapplication.ui.addloan.AddLoanComponent
+import com.github.tehras.loanapplication.ui.addloan.AddLoanModule
+import com.github.tehras.loanapplication.ui.addloan.fragments.basic.AddLoanBasicComponent
+import com.github.tehras.loanapplication.ui.addloan.fragments.basic.AddLoanBasicModule
 import com.github.tehras.loanapplication.ui.home.HomeLoanComponent
 import com.github.tehras.loanapplication.ui.home.HomeLoanModule
 import com.github.tehras.loanapplication.ui.loan.HomeLoanSingleComponent
@@ -23,7 +27,10 @@ interface AppComponent {
     // Submodule methods
     // Every screen is its own submodule of the graph and must be added here.
     // fun plus(module: Module): ModuleComponent
-    fun plus(homeLoanModule: HomeLoanModule): HomeLoanComponent
 
+    fun plus(homeLoanModule: HomeLoanModule): HomeLoanComponent
+    fun plus(addLoanModule: AddLoanModule): AddLoanComponent
     fun plus(homeSingleLoanModule: HomeLoanSingleModule): HomeLoanSingleComponent
+
+    fun plus(addLoanBasicModule: AddLoanBasicModule): AddLoanBasicComponent
 }

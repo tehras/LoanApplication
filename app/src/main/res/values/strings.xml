@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Loan Calculator</string>
-    <string name="title_activity_loan">HomeActivity</string>
+    <string name="title_activity_loan">Loan Calculator</string>
+    <string name="title_activity_add_loan">New Loan</string>
     <string name="empty_view">Empty View</string>
     <string name="no_data_found">No Data Found</string>
 
