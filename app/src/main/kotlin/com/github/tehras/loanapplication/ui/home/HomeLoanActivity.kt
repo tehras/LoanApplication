@@ -7,10 +7,7 @@ import com.github.tehras.loanapplication.AppComponent
 import com.github.tehras.loanapplication.R
 import com.github.tehras.loanapplication.data.remote.models.Loan
 import com.github.tehras.loanapplication.data.remote.models.PaymentsResponse
-import com.github.tehras.loanapplication.extensions.dollarWithTwoDecimalsFormat
-import com.github.tehras.loanapplication.extensions.hide
-import com.github.tehras.loanapplication.extensions.setupElevationListener
-import com.github.tehras.loanapplication.extensions.show
+import com.github.tehras.loanapplication.extensions.*
 import com.github.tehras.loanapplication.ui.base.PresenterActivity
 import kotlinx.android.synthetic.main.activity_loan.*
 import kotlinx.android.synthetic.main.empty_view.*
@@ -142,9 +139,14 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
         super.onRestoreInstanceState(savedInstanceState)
 
         val loans: ArrayList<Loan> = savedInstanceState.getParcelableArrayList(ARG_LOANS_KEY)
-        val payments: PaymentsResponse = savedInstanceState.getParcelable(ARG_PAYMENTS_KEY)
-        updateList(loans)
-        updateChart(payments)
+        val payments: PaymentsResponse? = savedInstanceState.getSafeParcelable(ARG_PAYMENTS_KEY)
+
+        if (payments != null) {
+            updateList(loans)
+            updateChart(payments)
+        } else {
+            refreshData()
+        }
     }
 
     companion object {

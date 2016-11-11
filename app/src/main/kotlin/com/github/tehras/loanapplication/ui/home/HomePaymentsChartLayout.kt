@@ -18,6 +18,7 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.tehras.loanapplication.R
 import com.github.tehras.loanapplication.data.remote.models.Payment
 import kotlinx.android.synthetic.main.home_loan_chart_layout.view.*
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,9 +34,12 @@ class HomePaymentsChartLayout(context: Context?, attrs: AttributeSet?, defStyleA
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context?) : this(context, null, 0)
 
+    var color: Int = 0
+
     init {
         View.inflate(context, R.layout.home_loan_chart_layout, this)
 
+        color = context?.resources?.getColor(R.color.colorPrimary) ?: 0
         line_chart_layout.initHomeLayout()
     }
 
@@ -45,12 +49,12 @@ class HomePaymentsChartLayout(context: Context?, attrs: AttributeSet?, defStyleA
         this.xAxis.valueFormatter = this@HomePaymentsChartLayout
         this.xAxis.position = XAxis.XAxisPosition.BOTTOM
         this.xAxis.setDrawLabels(true)
-        this.xAxis.textColor = resources.getColor(R.color.colorPrimary)
+        this.xAxis.textColor = color
 
         this.legend.form = Legend.LegendForm.NONE
 
         this.axisRight.isEnabled = false
-        this.axisLeft.textColor = context.resources.getColor(R.color.colorPrimary, null)
+        this.axisLeft.textColor = color
         this.axisLeft.setDrawGridLines(false)
         this.axisLeft.setDrawAxisLine(false)
         this.axisLeft.isEnabled = true
@@ -58,12 +62,22 @@ class HomePaymentsChartLayout(context: Context?, attrs: AttributeSet?, defStyleA
         this.description = Description()
         this.description.text = ""
         this.setNoDataText("Loading, Please Wait")
-        this.setNoDataTextColor(resources.getColor(R.color.colorPrimary))
+        this.setNoDataTextColor(color)
 
         this.setTouchEnabled(false)
     }
 
+    fun setChartColor(color: Int): HomePaymentsChartLayout {
+        this.color = color
+
+        line_chart_layout.axisLeft.textColor = color
+        line_chart_layout.xAxis.textColor = color
+
+        return this
+    }
+
     fun updateData(payments: ArrayList<Payment>?) {
+        Timber.d("payments - ${payments?.size ?: 0}")
         if (payments == null)
             return
 
@@ -77,6 +91,7 @@ class HomePaymentsChartLayout(context: Context?, attrs: AttributeSet?, defStyleA
         val dataSet: LineDataSet = LineDataSet(vals, "")
         dataSet.initBalanceProperties()
         dataSet.label = ""
+        dataSet.setColors(color)
 
         data.addDataSet(dataSet)
         data.initBalanceProperties()
@@ -99,12 +114,11 @@ class HomePaymentsChartLayout(context: Context?, attrs: AttributeSet?, defStyleA
         return date.time
     }
 
-
     fun LineDataSet.initBalanceProperties() {
         this.setDrawCircles(false)
 
         this.lineWidth = 2.0f
-        this.color = line_chart_layout.context.resources.getColor(R.color.colorPrimary, null)
+        this.color = color
         this.label = ""
 
         this.mode = LineDataSet.Mode.CUBIC_BEZIER

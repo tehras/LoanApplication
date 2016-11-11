@@ -7,14 +7,15 @@ import android.view.ViewGroup
 import com.github.tehras.loanapplication.AppComponent
 import com.github.tehras.loanapplication.R
 import com.github.tehras.loanapplication.data.remote.models.Loan
+import com.github.tehras.loanapplication.data.remote.models.Payment
 import com.github.tehras.loanapplication.data.remote.models.SinglePaymentResponse
 import com.github.tehras.loanapplication.extensions.addToBundle
 import com.github.tehras.loanapplication.extensions.dollarWithTwoDecimalsFormat
 import com.github.tehras.loanapplication.extensions.formatDate
 import com.github.tehras.loanapplication.extensions.percentageFormat
 import com.github.tehras.loanapplication.ui.base.PresenterBottomSheetFragment
-import com.github.tehras.loanapplication.ui.home.HomeLoanActivity
 import kotlinx.android.synthetic.main.bottom_sheet_loan_layout.*
+import kotlinx.android.synthetic.main.home_loan_chart_layout.*
 import java.util.*
 
 /**
@@ -25,27 +26,36 @@ open class HomeLoanBottomSheetDialog : PresenterBottomSheetFragment<HomeLoanSing
     override fun injectDependencies(graph: AppComponent) {
         graph.plus(HomeLoanSingleModule(this))
                 .injectTo(this)
-//        (this.activity as HomeLoanActivity).component.injectTo(this)
     }
 
     override fun updateChart(payments: ArrayList<SinglePaymentResponse>) {
+        loan_sheet_chart.setChartColor(context.resources.getColor(R.color.colorYellow))
+                .updateData(firstPayment(payments))
+        loan_sheet_chart.visibility = View.VISIBLE
+    }
 
+    private fun firstPayment(payments: ArrayList<SinglePaymentResponse>): ArrayList<Payment>? {
+        if (payments.size > 0)
+            return payments[0].payments
+
+        return ArrayList()
     }
 
     override fun errorNoNetwork() {
-
+        loan_sheet_error_layout.visibility = View.VISIBLE
     }
 
     override fun errorFetchData() {
-
+        loan_sheet_error_layout.visibility = View.VISIBLE
     }
 
     override fun startChartLoading() {
-
+        loan_sheet_error_layout.visibility = View.GONE
+        loading_layout.visibility = View.VISIBLE
     }
 
     override fun stopChartLoading() {
-
+        loading_layout.visibility = View.GONE
     }
 
     companion object {
@@ -58,14 +68,12 @@ open class HomeLoanBottomSheetDialog : PresenterBottomSheetFragment<HomeLoanSing
 
     private var loan: Loan? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        this.loan = arguments.getParcelable<Loan>(ARG_LOAN)
-    }
-
     override fun onStart() {
         super.onStart()
+
+        this.loan = arguments.getParcelable<Loan>(ARG_LOAN)
+
+        initChartView()
 
         loan_sheet_balance.text = loan?.balance?.dollarWithTwoDecimalsFormat() ?: ""
         loan_sheet_base_payment.text = loan?.payment?.dollarWithTwoDecimalsFormat() ?: ""
@@ -80,5 +88,15 @@ open class HomeLoanBottomSheetDialog : PresenterBottomSheetFragment<HomeLoanSing
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.bottom_sheet_loan_layout, container)
+    }
+
+    private fun initChartView() {
+        loan_sheet_error_layout.visibility = View.GONE
+        loan_sheet_chart.visibility = View.INVISIBLE
+        loading_layout.visibility = View.GONE
+        line_chart_layout_background.setBackgroundColor(context.resources.getColor(android.R.color.transparent))
+        loan_error_refresh.setOnClickListener {
+            presenter.getSingleRepayments(loan)
+        }
     }
 }

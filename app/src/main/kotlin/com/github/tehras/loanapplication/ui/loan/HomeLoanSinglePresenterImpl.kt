@@ -19,17 +19,18 @@ class HomeLoanSinglePresenterImpl @Inject constructor(private val apiService: Lo
     private var subscription: Subscription = Subscriptions.unsubscribed()
 
 
-    override fun getSingleRepayments(loan: Loan) {
+    override fun getSingleRepayments(loan: Loan?) {
         Timber.d("trying to retrieve signle repayments")
         subscription.unsubscribe() // Unsubscribe from any current running request
 
         view?.startChartLoading() //show loading
 
         subscription = networkInteractor.hasNetworkConnectionCompletable()
-                .andThen(apiService.retrieveSingleRepayments(loanId = loan.key)
+                .andThen(apiService.retrieveSingleRepayments(loanId = loan?.key ?: "")
                         .toObservable().compose(deliverFirst<ArrayList<SinglePaymentResponse>>())
                         .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()))
                 .subscribe({//success
+                    Timber.d("success ${it[0].payments.size}")
                     view?.stopChartLoading()
                     view?.updateChart(it)
                 }) {//error

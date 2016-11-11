@@ -19,4 +19,5 @@
     <string name="sheet_base_payment">Base Payment</string>
     <string name="sheet_extra_payment">Extra Payment</string>
     <string name="sheet_repayment_start_date">Repayment Start Date</string>
+    <string name="error_retrieving_data_try_again">Error retrieving data! Try Again!</string>
 </resources>

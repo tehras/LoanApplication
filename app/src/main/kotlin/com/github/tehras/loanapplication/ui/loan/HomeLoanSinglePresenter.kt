@@ -5,5 +5,5 @@ import com.github.tehras.loanapplication.ui.base.Presenter
 
 interface HomeLoanSinglePresenter : Presenter<HomeLoanSingleView> {
 
-    fun getSingleRepayments(loan: Loan)
+    fun getSingleRepayments(loan: Loan?)
 }
