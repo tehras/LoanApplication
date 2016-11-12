@@ -76,7 +76,7 @@ class HomePaymentsChartLayout(context: Context?, attrs: AttributeSet?, defStyleA
         return this
     }
 
-    fun updateData(payments: ArrayList<Payment>?) {
+    fun updateData(payments: ArrayList<Payment>?, animate: Boolean) {
         Timber.d("payments - ${payments?.size ?: 0}")
         if (payments == null)
             return
@@ -96,7 +96,9 @@ class HomePaymentsChartLayout(context: Context?, attrs: AttributeSet?, defStyleA
         data.addDataSet(dataSet)
         data.initBalanceProperties()
         line_chart_layout.data = data
-        line_chart_layout.animateX(500)
+        if (animate)
+            line_chart_layout.animateX(500)
+    
         line_chart_layout.notifyDataSetChanged()
     }
 

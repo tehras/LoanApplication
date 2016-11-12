@@ -23,14 +23,24 @@ import javax.inject.Inject
 class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), HomeLoanView {
     var payments: PaymentsResponse? = null
 
-    override fun updateChart(payments: PaymentsResponse) {
-        Timber.d("chartUpdated - ${payments.payments.size}")
+    override fun updateChart(payments: PaymentsResponse, animate: Boolean) {
         this.payments = payments
-        home_payment_chart_layout.updateData(payments.payments)
+
+        val func = { home_payment_chart_layout.updateData(payments.payments, animate) }
+        if (animate) {
+            home_payment_chart_layout.visibility = View.INVISIBLE
+            home_payment_chart_layout.animateInFromTop(AnimationBuilder.Builder.animationTime(500L).postAnimFunction {
+                func()
+            }.build())
+        } else {
+            func()
+        }
+
     }
 
     override fun updateList(loans: ArrayList<Loan>) {
         adapter.updateLoans(loans)
+
         home_loan_total_balance.text = getTotalBalance(loans)
         updateEmptyView(false, "No loans found")
     }
@@ -90,8 +100,8 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
     private fun setupFab() {
         home_add_button.setOnClickListener {
             val intent = Intent(this, AddLoanActivity::class.java)
-            intent.putExtra(EXTRA_X_COORDINATE, (home_add_button.left + home_add_button.right) / 2)
-            intent.putExtra(EXTRA_Y_COORDINATE, (home_add_button.top + home_add_button.bottom) / 2)
+            intent.putExtra(EXTRA_X_COORDINATE, home_add_button.centerX())
+            intent.putExtra(EXTRA_Y_COORDINATE, (home_add_button.centerY() + toolbar.height)) //this had to be done to adjust for the toolbar
             intent.putExtra(EXTRA_RADIUS_COORDINATE, home_add_button.right - home_add_button.left)
 
             startActivity(intent)
@@ -155,7 +165,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
 
         if (payments != null) {
             updateList(loans)
-            updateChart(payments)
+            updateChart(payments, true)
         } else {
             refreshData()
         }

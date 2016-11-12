@@ -8,9 +8,6 @@ import retrofit2.http.Path
 import rx.Single
 import java.util.*
 
-/**
- * Created by tehras on 11/5/16.
- */
 interface LoanApiService {
 
     @GET("/loans")

@@ -30,7 +30,7 @@ open class HomeLoanBottomSheetDialog : PresenterBottomSheetFragment<HomeLoanSing
 
     override fun updateChart(payments: ArrayList<SinglePaymentResponse>) {
         loan_sheet_chart.setChartColor(context.resources.getColor(R.color.colorYellow))
-                .updateData(firstPayment(payments))
+                .updateData(firstPayment(payments), true)
         loan_sheet_chart.visibility = View.VISIBLE
     }
 

@@ -21,4 +21,7 @@
     <string name="sheet_extra_payment">Extra Payment</string>
     <string name="sheet_repayment_start_date">Repayment Start Date</string>
     <string name="error_retrieving_data_try_again">Error retrieving data! Try Again!</string>
+    <string name="add_loan_basic_information_intro">Let\'s start with some basic information…</string>
+    <string name="add_loan_loan_name_hint">My Awesome Loan</string>
+    <string name="loan_name_loan_name_label">Loan Name:</string>
 </resources>

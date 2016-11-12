@@ -62,5 +62,28 @@
         <item name="android:textStyle">italic</item>
     </style>
 
+    <style name="AddNewLoanText">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_marginStart">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginEnd">@dimen/activity_horizontal_margin</item>
+        <item name="android:layout_marginTop">@dimen/activity_vertical_margin</item>
+        <item name="android:layout_marginBottom">@dimen/activity_vertical_margin</item>
+    </style>
+
+    <style name="AddNewLoanText.Title">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="AddNewLoanText.Label">
+        <item name="android:textAlignment">textEnd</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AddNewLoanText.EditText">
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">@color/hintColor</item>
+    </style>
 
 </resources>

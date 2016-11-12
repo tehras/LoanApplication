@@ -34,6 +34,7 @@ class HomeLoanSinglePresenterImpl @Inject constructor(private val apiService: Lo
                     view?.stopChartLoading()
                     view?.updateChart(it)
                 }) {//error
+                    view?.stopChartLoading()
                     when (it) {
                         is NetworkInteractor.NetworkUnavailableException -> view?.errorNoNetwork()
                         else -> view?.errorFetchData()

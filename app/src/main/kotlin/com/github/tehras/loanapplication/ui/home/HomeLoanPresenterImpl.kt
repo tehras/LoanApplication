@@ -48,7 +48,7 @@ class HomeLoanPresenterImpl @Inject constructor(private val apiService: LoanApiS
                 .subscribe({//success
                     view?.stopLoading()
                     view?.updateList(it.loans)
-                    view?.updateChart(it.paymentsResponse)
+                    view?.updateChart(it.paymentsResponse, showLoading)
                 }) {//error
                     when (it) {
                         is NetworkInteractor.NetworkUnavailableException -> view?.errorNoNetwork()

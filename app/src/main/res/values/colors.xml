@@ -9,4 +9,5 @@
     <color name="colorRed">#F44336</color>
 
     <color name="backgroundColor">#FFFFFF</color>
+    <color name="hintColor">#99FFFFFF</color>
 </resources>

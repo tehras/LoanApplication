@@ -7,7 +7,7 @@ import java.util.*
 
 interface HomeLoanView : MvpView {
     fun updateList(loans: ArrayList<Loan>)
-    fun updateChart(payments: PaymentsResponse)
+    fun updateChart(payments: PaymentsResponse, animate: Boolean)
 
     fun startLoading()
     fun stopLoading()

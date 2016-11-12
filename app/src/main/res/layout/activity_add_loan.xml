@@ -6,16 +6,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
-        app:layout_scrollFlags="enterAlways"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        app:title="New Loan"
-        app:titleTextColor="@android:color/white" />
-
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -24,7 +14,7 @@
             android:id="@+id/add_loan_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/backgroundColor" />
+            android:background="@drawable/background_gradients" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/add_loan_next_button"
