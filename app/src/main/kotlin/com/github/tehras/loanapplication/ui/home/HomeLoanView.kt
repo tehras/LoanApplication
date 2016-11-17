@@ -6,7 +6,7 @@ import com.github.tehras.loanapplication.ui.base.MvpView
 import java.util.*
 
 interface HomeLoanView : MvpView {
-    fun updateList(loans: ArrayList<Loan>)
+    fun updateList(loans: ArrayList<Loan>, animate: Boolean)
     fun updateChart(payments: PaymentsResponse, animate: Boolean)
 
     fun startLoading()

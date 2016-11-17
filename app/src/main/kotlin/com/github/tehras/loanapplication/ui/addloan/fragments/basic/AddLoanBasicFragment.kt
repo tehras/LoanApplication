@@ -4,13 +4,27 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.github.tehras.loanapplication.AppComponent
+import android.widget.TextView
 import com.github.tehras.loanapplication.R
 import com.github.tehras.loanapplication.extensions.*
-import com.github.tehras.loanapplication.ui.base.PresenterFragment
+import com.github.tehras.loanapplication.ui.addloan.fragments.AddLoanBaseComponent
+import com.github.tehras.loanapplication.ui.addloan.fragments.AddLoanBaseFragment
 import kotlinx.android.synthetic.main.fragment_add_loan_basic.*
 
-class AddLoanBasicFragment : PresenterFragment<AddLoanBasicView, AddLoanBasicPresenter>(), AddLoanBasicView {
+class AddLoanBasicFragment : AddLoanBaseFragment<AddLoanBasicView, AddLoanBasicPresenter>(), AddLoanBasicView {
+    override fun injectTo(plus: AddLoanBaseComponent) {
+        plus.injectTo(this)
+    }
+
+    override fun validateAnswers(): Boolean {
+        val isValidLoanName = isValidLoanName(add_loan_basic_loan_name)
+
+        return isValidLoanName
+    }
+
+    private fun isValidLoanName(tv: TextView): Boolean {
+        return tv.isValidLength(3, 15)
+    }
 
     companion object {
         fun instance(): AddLoanBasicFragment {
@@ -18,16 +32,14 @@ class AddLoanBasicFragment : PresenterFragment<AddLoanBasicView, AddLoanBasicPre
         }
     }
 
-    override fun injectDependencies(graph: AppComponent) {
-        graph.plus(AddLoanBasicModule(this))
-                .injectTo(this)
-    }
-
     override fun onStart() {
         super.onStart()
 
         //animate the textViews once visible
         animateTheViewsIn()
+
+        //add text watcher
+        add_loan_basic_loan_name.addErrorTextWatcher { isValidLoanName(tv = this) }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

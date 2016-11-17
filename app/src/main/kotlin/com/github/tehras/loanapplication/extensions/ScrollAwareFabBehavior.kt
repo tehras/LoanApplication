@@ -11,7 +11,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AnimationUtils
 import com.github.tehras.loanapplication.R
-import timber.log.Timber
 
 @Suppress("UNUSED")
 class ScrollAwareFabBehavior(context: Context?, attrs: AttributeSet?) : FloatingActionButton.Behavior(context, attrs) {

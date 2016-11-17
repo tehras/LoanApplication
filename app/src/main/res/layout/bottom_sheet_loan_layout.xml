@@ -47,7 +47,7 @@
         <com.github.tehras.loanapplication.ui.home.HomePaymentsChartLayout
             android:id="@+id/loan_sheet_chart"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="wrap_content" />
 
         <include
             android:id="@+id/loading_layout"
@@ -61,7 +61,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
 
             <TextView
                 android:id="@+id/loan_sheet_error"

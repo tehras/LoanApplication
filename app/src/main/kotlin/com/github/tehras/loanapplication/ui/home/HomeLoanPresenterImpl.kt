@@ -31,32 +31,36 @@ class HomeLoanPresenterImpl @Inject constructor(private val apiService: LoanApiS
 
     override fun getLoans(showLoading: Boolean) {
         Timber.d("trying to retrieve loans")
-        subscription.unsubscribe() // Unsubscribe from any current running request
+        if (subscription.isUnsubscribed) {
+            subscription.unsubscribe() // Unsubscribe from any current running request
 
-        if (showLoading)
-            view?.startLoading() //show loading
+            if (showLoading)
+                view?.startLoading() //show loading
 
-        val loanSearch = apiService.loanSearch()
-                .toObservable().compose(deliverFirst<ArrayList<Loan>>())
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            val loanSearch = apiService.loanSearch()
+                    .toObservable().compose(deliverFirst<ArrayList<Loan>>())
+                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
-        val chartData = apiService.retrievePayments().toObservable().compose(deliverFirst<PaymentsResponse>())
-                .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+            val chartData = apiService.retrievePayments().toObservable().compose(deliverFirst<PaymentsResponse>())
+                    .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
-        subscription = networkInteractor.hasNetworkConnectionCompletable()
-                .andThen(Observable.zip(loanSearch, chartData, { loans, paymentResponse -> PaymentsAndLoans(paymentResponse, loans) }))
-                .subscribe({//success
-                    view?.stopLoading()
-                    view?.updateList(it.loans)
-                    view?.updateChart(it.paymentsResponse, showLoading)
-                }) {//error
-                    when (it) {
-                        is NetworkInteractor.NetworkUnavailableException -> view?.errorNoNetwork()
-                        else -> view?.errorFetchData()
+            subscription = networkInteractor.hasNetworkConnectionCompletable()
+                    .andThen(Observable.zip(loanSearch, chartData, { loans, paymentResponse -> PaymentsAndLoans(paymentResponse, loans) }))
+                    .subscribe({//success
+                        view?.stopLoading()
+                        view?.updateList(it.loans, showLoading)
+                        view?.updateChart(it.paymentsResponse, showLoading)
+                        subscription.unsubscribe()
+                    }) {//error
+                        when (it) {
+                            is NetworkInteractor.NetworkUnavailableException -> view?.errorNoNetwork()
+                            else -> view?.errorFetchData()
+                        }
+                        subscription.unsubscribe()
                     }
-                }
 
-        addSubscription(subscription)
+            addSubscription(subscription)
+        }
     }
 
     override fun bindView(view: HomeLoanView) {

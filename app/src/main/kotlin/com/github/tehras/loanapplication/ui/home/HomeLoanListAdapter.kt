@@ -43,19 +43,11 @@ class HomeLoanListAdapter @Inject constructor() : RecyclerView.Adapter<RecyclerV
 
     override fun getItemCount(): Int = loans.size
 
-    fun updateLoans(loans: ArrayList<Loan>) {
+    fun updateLoans(loans: ArrayList<Loan>, animate: Boolean) {
         val prevLoans = this.loans
-        if (prevLoans.isNotEmpty()) {
-            //find what is the difference
-            val prevSize = prevLoans.size
-            if (prevSize == loans.size) {
-                this.loans = loans
-                notifyItemRangeChanged(0, itemCount)
-            } else {
-                //todo find te missing piece
-                this.loans = loans
-                notifyDataSetChanged()
-            }
+        if (prevLoans.isNotEmpty() || !animate) {
+            this.loans = loans
+            notifyDataSetChanged()
         } else {
             this.loans = loans
             notifyItemRangeInserted(0, itemCount)

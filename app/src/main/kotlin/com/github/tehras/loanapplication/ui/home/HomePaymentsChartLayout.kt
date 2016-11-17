@@ -98,7 +98,7 @@ class HomePaymentsChartLayout(context: Context?, attrs: AttributeSet?, defStyleA
         line_chart_layout.data = data
         if (animate)
             line_chart_layout.animateX(500)
-    
+
         line_chart_layout.notifyDataSetChanged()
     }
 

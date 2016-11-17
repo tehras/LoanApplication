@@ -5,6 +5,8 @@ import com.github.tehras.loanapplication.AppComponent
 import com.github.tehras.loanapplication.R
 import com.github.tehras.loanapplication.data.remote.models.Loan
 import com.github.tehras.loanapplication.extensions.*
+import com.github.tehras.loanapplication.ui.addloan.fragments.AddLoanBaseFragment
+import com.github.tehras.loanapplication.ui.addloan.fragments.balance.AddLoanBalanceFragment
 import com.github.tehras.loanapplication.ui.addloan.fragments.basic.AddLoanBasicFragment
 import com.github.tehras.loanapplication.ui.base.PresenterActivity
 import kotlinx.android.synthetic.main.activity_add_loan.*
@@ -48,11 +50,11 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
     private val ARG_LOAN_OBJECT = "bundle_loan"
 
     private var addLoanStage: AddLoanStage = AddLoanStage.BASIC_INFORMATION
-    private var loan: Loan = Loan()
+    var loan: Loan = Loan()
 
     override fun onBackPressed() {
         if (!supportFragmentManager.popBackStackImmediate()) {
-            //tood animate then close
+            //todo animate then close
             exitCircularReveal(add_loan_prev_button.centerX(), add_loan_prev_button.centerY())
         }
     }
@@ -75,12 +77,34 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
     }
 
     private fun onNextPressed() {
-        //switch case
-        when (addLoanStage) {
-            AddLoanStage.BASIC_INFORMATION -> {
-                //start BASIC_INFORMATION_FRAGMENT
+        //check if next is valid
+        if (notifyFragmentThatNextWasPressed()) {
+            //switch case
+            addLoanStage = AddLoanStage.converToStage(addLoanStage.stage++) //add one more
+            when (addLoanStage) {
+                AddLoanStage.BASIC_INFORMATION -> {
+                    AddLoanBasicFragment.instance().startFragment(R.id.add_loan_fragment_container, this)
+                }
+                AddLoanStage.BALANCE_INFORMATION -> {
+                    AddLoanBalanceFragment.instance(loan).startFragment(R.id.add_loan_fragment_container, activity = this)
+
+                }
             }
         }
+    }
+
+    private fun notifyFragmentThatNextWasPressed(): Boolean {
+        supportFragmentManager.let {
+            val fragments = supportFragmentManager.fragments
+            fragments.let {
+                val lastFragment = fragments[fragments.size - 1] //get last fragment
+                if (lastFragment is AddLoanBaseFragment<*, *>) {
+                    return lastFragment.validateAnswers()
+                }
+            }
+        }
+
+        return false
     }
 
     override fun loanAddedSuccessfully() {

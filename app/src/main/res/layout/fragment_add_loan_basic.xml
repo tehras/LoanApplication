@@ -25,13 +25,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <LinearLayout
             android:id="@+id/add_loan_loan_name_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
 
             <TextView
                 style="@style/AddNewLoanText.Label"
@@ -47,14 +49,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="50"
                 android:hint="@string/add_loan_loan_name_hint" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="50">
-
 
         </LinearLayout>
 

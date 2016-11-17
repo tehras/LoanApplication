@@ -17,13 +17,7 @@ import javax.inject.Singleton
  * in order to be able to be used everywhere in the app
  */
 @Module
-class AppModule {
-
-    lateinit private var application: MyApp
-
-    constructor(application: MyApp) {
-        this.application = application
-    }
+class AppModule(private var application: MyApp) {
 
     @Provides
     @Singleton

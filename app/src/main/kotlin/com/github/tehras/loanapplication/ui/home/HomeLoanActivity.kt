@@ -38,8 +38,8 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
 
     }
 
-    override fun updateList(loans: ArrayList<Loan>) {
-        adapter.updateLoans(loans)
+    override fun updateList(loans: ArrayList<Loan>, animate: Boolean) {
+        adapter.updateLoans(loans, animate)
 
         home_loan_total_balance.text = getTotalBalance(loans)
         updateEmptyView(false, "No loans found")
@@ -89,12 +89,20 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Timber.d("onCreate")
         setContentView(R.layout.activity_loan)
         setSupportActionBar(toolbar)
 
         setupRecyclerView()
         setupFab()
         appbar_layout.setupElevationListener(toolbar)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (freshStart)
+            refreshData()
     }
 
     private fun setupFab() {
@@ -106,12 +114,6 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
 
             startActivity(intent)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        refreshData()
     }
 
     private fun refreshData() {
@@ -151,6 +153,8 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        Timber.d("onSaveInstanceState")
+
         outState.putParcelableArrayList(ARG_LOANS_KEY, adapter.getLoans())
         outState.putParcelable(ARG_PAYMENTS_KEY, payments)
 
@@ -159,12 +163,13 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
+        Timber.d("onRestoreInstanceState")
 
         val loans: ArrayList<Loan> = savedInstanceState.getParcelableArrayList(ARG_LOANS_KEY)
         val payments: PaymentsResponse? = savedInstanceState.getSafeParcelable(ARG_PAYMENTS_KEY)
 
         if (payments != null) {
-            updateList(loans)
+            updateList(loans, true)
             updateChart(payments, true)
         } else {
             refreshData()

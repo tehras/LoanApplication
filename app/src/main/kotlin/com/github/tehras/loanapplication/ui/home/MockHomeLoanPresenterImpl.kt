@@ -28,7 +28,7 @@ class MockHomeLoanPresenterImpl @Inject constructor(private val apiService: Loan
 
     override fun getLoans(showLoading: Boolean) {
         view?.stopLoading()
-        view?.updateList(dummyLoans())
+        view?.updateList(dummyLoans(), showLoading)
         view?.updateChart(dummyChartData(), showLoading)
     }
 

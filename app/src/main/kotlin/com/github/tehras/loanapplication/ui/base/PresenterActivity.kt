@@ -17,13 +17,22 @@ abstract class PresenterActivity<V : MvpView, T : Presenter<V>> : BaseActivity()
     @Inject
     protected lateinit var presenterLoaderProvider: Provider<PresenterLoader<T>>
 
+    protected var freshStart: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initLoader()
+
+        if (savedInstanceState == null) {
+            this.freshStart = true
+        } else {
+            this.freshStart = false
+        }
     }
 
     @CallSuper
     protected fun onPresenterProvided(presenter: T) {
+        Timber.d("onPresenterProvided")
         this.presenter = presenter
     }
 

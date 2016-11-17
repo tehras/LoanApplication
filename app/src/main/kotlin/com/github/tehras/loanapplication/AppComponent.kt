@@ -4,8 +4,8 @@ import com.github.tehras.loanapplication.data.network.NetworkModule
 import com.github.tehras.loanapplication.data.remote.ApiModule
 import com.github.tehras.loanapplication.ui.addloan.AddLoanComponent
 import com.github.tehras.loanapplication.ui.addloan.AddLoanModule
-import com.github.tehras.loanapplication.ui.addloan.fragments.basic.AddLoanBasicComponent
-import com.github.tehras.loanapplication.ui.addloan.fragments.basic.AddLoanBasicModule
+import com.github.tehras.loanapplication.ui.addloan.fragments.AddLoanBaseComponent
+import com.github.tehras.loanapplication.ui.addloan.fragments.AddLoanFragmentModule
 import com.github.tehras.loanapplication.ui.home.HomeLoanComponent
 import com.github.tehras.loanapplication.ui.home.HomeLoanModule
 import com.github.tehras.loanapplication.ui.loan.HomeLoanSingleComponent
@@ -32,5 +32,5 @@ interface AppComponent {
     fun plus(addLoanModule: AddLoanModule): AddLoanComponent
     fun plus(homeSingleLoanModule: HomeLoanSingleModule): HomeLoanSingleComponent
 
-    fun plus(addLoanBasicModule: AddLoanBasicModule): AddLoanBasicComponent
+    fun plus(addLoanBasicModule: AddLoanFragmentModule): AddLoanBaseComponent
 }
