@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import com.github.tehras.loanapplication.R
 
 fun View.show() {
@@ -78,4 +79,10 @@ fun Snackbar.action(action: String, @ColorInt color: Int? = null, listener: (Vie
 
 fun View.getInteger(i: Int): Int {
     return this.context.resources.getInteger(i)
+}
+
+fun ImageView.populateDrawable(i: Int) {
+    visibility = View.VISIBLE
+    this.setImageDrawable(this.resources.getDrawable(i, null))
+    this.animateExpand()
 }

@@ -42,6 +42,8 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
         adapter.updateLoans(loans, animate)
 
         home_loan_total_balance.text = getTotalBalance(loans)
+        home_loan_total_balance_layout.animateInFromTop(AnimationBuilder.Builder.animationTime(300L).build())
+
         updateEmptyView(false, "No loans found")
     }
 
@@ -91,11 +93,9 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
         super.onCreate(savedInstanceState)
         Timber.d("onCreate")
         setContentView(R.layout.activity_loan)
-        setSupportActionBar(toolbar)
 
         setupRecyclerView()
         setupFab()
-        appbar_layout.setupElevationListener(toolbar)
     }
 
     override fun onStart() {
@@ -109,7 +109,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
         home_add_button.setOnClickListener {
             val intent = Intent(this, AddLoanActivity::class.java)
             intent.putExtra(EXTRA_X_COORDINATE, home_add_button.centerX())
-            intent.putExtra(EXTRA_Y_COORDINATE, (home_add_button.centerY() + toolbar.height)) //this had to be done to adjust for the toolbar
+            intent.putExtra(EXTRA_Y_COORDINATE, (home_add_button.centerY())) //this had to be done to adjust for the toolbar
             intent.putExtra(EXTRA_RADIUS_COORDINATE, home_add_button.right - home_add_button.left)
 
             startActivity(intent)

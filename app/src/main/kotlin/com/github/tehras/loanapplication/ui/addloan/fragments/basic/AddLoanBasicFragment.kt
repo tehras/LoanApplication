@@ -1,5 +1,6 @@
 package com.github.tehras.loanapplication.ui.addloan.fragments.basic
 
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,11 +19,17 @@ class AddLoanBasicFragment : AddLoanBaseFragment<AddLoanBasicView, AddLoanBasicP
 
     override fun validateAnswers(): Boolean {
         val isValidLoanName = isValidLoanName(add_loan_basic_loan_name)
+        if (isValidLoanName)
+            return isValidProvider(add_loan_basic_loan_provider)
 
         return isValidLoanName
     }
 
     private fun isValidLoanName(tv: TextView): Boolean {
+        return tv.isValidLength(3, 15)
+    }
+
+    private fun isValidProvider(tv: TextView): Boolean {
         return tv.isValidLength(3, 15)
     }
 
@@ -48,11 +55,20 @@ class AddLoanBasicFragment : AddLoanBaseFragment<AddLoanBasicView, AddLoanBasicP
 
     private fun animateTheViewsIn() {
         add_loan_loan_name_container.visibility = View.INVISIBLE
+        add_loan_loan_provider_container.visibility = View.INVISIBLE
+        @Suppress("DEPRECATION")
+        add_loan_basic_loan_provider.background.mutate().setColorFilter(resources.getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP)
+        @Suppress("DEPRECATION")
+        add_loan_basic_loan_name.background.mutate().setColorFilter(resources.getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP)
+
+        val animTime = add_loan_loan_name_container.getInteger(android.R.integer.config_mediumAnimTime).toLong()
         add_loan_basic_title.waitForLayoutToFinish {
             animateInFromLeft(AnimationBuilder.Builder
-                    .postAnimation(this.getInteger(android.R.integer.config_mediumAnimTime).toLong())
+                    .postAnimation(animTime)
                     .postAnimFunction {
-                        add_loan_loan_name_container.animateInFromBottom(defaultAnimBuilder)
+                        add_loan_loan_name_container.animateInFromBottom(AnimationBuilder
+                                .postAnimFunction { add_loan_loan_provider_container.animateInFromBottom(defaultAnimBuilder) }
+                                .build())
                     }
                     .build())
         }

@@ -24,4 +24,12 @@
     <string name="add_loan_basic_information_intro">Let\'s start with some basic information…</string>
     <string name="add_loan_loan_name_hint">My Awesome Loan</string>
     <string name="loan_name_loan_name_label">Loan Name:</string>
+    <string name="loan_provider_label">Loan Provider:</string>
+    <string name="loan_provider_hint">Bank 1234</string>
+    <string name="let_s_create_a_new_loan">Let\'s create a new loan!</string>
+    <string name="let_s_create_new_loan_hint">Don\'t worry this will be nice and easy. We\'ll walk you through this process, and remember, you can always edit your inputs later!</string>
+    <string name="start">Start</string>
+    <string name="let_s_get_start_image">Let\'s Get Start Image</string>
+    <string name="backpack_graphic">Backpack graphic</string>
+    <string name="backdrop_content">backdrop content</string>
 </resources>

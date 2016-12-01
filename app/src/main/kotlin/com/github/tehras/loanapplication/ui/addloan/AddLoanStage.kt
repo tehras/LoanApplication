@@ -1,12 +1,16 @@
 package com.github.tehras.loanapplication.ui.addloan
 
-enum class AddLoanStage(var stage: Int) {
-    BASIC_INFORMATION(0), BALANCE_INFORMATION(1);
+import com.github.tehras.loanapplication.R
+
+enum class AddLoanStage(var stage: Int, var bottomGrad: Int) {
+    BASIC_INFORMATION(0, R.drawable.backpack), BALANCE_INFORMATION(1, R.drawable.calculator);
 
     companion object {
-        fun converToStage(i: Int): AddLoanStage {
+        fun convertToStage(i: Int): AddLoanStage {
             values().forEach {
-                if (it.stage == i) return it
+                if (i.compareTo(it.stage) == 0) {
+                    return it
+                }
             }
 
             return BASIC_INFORMATION

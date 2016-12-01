@@ -2,6 +2,8 @@ package com.github.tehras.loanapplication.extensions
 
 import android.animation.Animator
 import android.app.Activity
+import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
@@ -14,6 +16,10 @@ fun View.centerX(): Int {
 
 fun View.centerY(): Int {
     return (this.top + this.bottom) / 2
+}
+
+fun AppCompatActivity.getTopFragment() : Fragment? {
+    return this.supportFragmentManager?.fragments?.get(supportFragmentManager?.fragments?.size?.minus(1) ?: 0)
 }
 
 /**

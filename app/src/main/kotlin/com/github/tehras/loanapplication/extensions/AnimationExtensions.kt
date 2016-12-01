@@ -112,6 +112,31 @@ fun View.animateInFromBottom(builder: AnimationBuilder) {
     this.animateVertically(builder, this.measuredHeight.toFloat())
 }
 
+fun View.animateExpand() {
+    this.scaleX = 0.3f
+    this.scaleY = 0.3f
+    this.animate()
+            .scaleXBy(0.7f)
+            .scaleYBy(0.7f)
+            .setListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(p0: Animator?) {
+
+                }
+
+                override fun onAnimationEnd(p0: Animator?) {
+
+                }
+
+                override fun onAnimationCancel(p0: Animator?) {
+                }
+
+                override fun onAnimationStart(p0: Animator?) {
+                    this@animateExpand.visibility = View.VISIBLE
+                }
+
+            })
+            .start()
+}
 
 private fun View.animateVertically(builder: AnimationBuilder, translationY: Float) {
     Timber.d("builder $builder")

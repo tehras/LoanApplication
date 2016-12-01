@@ -35,16 +35,6 @@ public class HomeLoanActivityTest {
 
     @Test
     public void homeLoanActivityTest() {
-        ViewInteraction textView = onView(
-                allOf(withText("Loan Calculator"),
-                        childAtPosition(
-                                allOf(withId(R.id.toolbar),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        textView.check(matches(withText("Loan Calculator")));
 
         ViewInteraction textView2 = onView(
                 allOf(withText("Current Balance"),

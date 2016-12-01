@@ -1,5 +1,6 @@
 package com.github.tehras.loanapplication.ui.loan
 
+import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,8 @@ import com.github.tehras.loanapplication.extensions.percentageFormat
 import com.github.tehras.loanapplication.ui.base.PresenterBottomSheetFragment
 import kotlinx.android.synthetic.main.bottom_sheet_loan_layout.*
 import kotlinx.android.synthetic.main.home_loan_chart_layout.*
+import kotlinx.android.synthetic.main.loading_view.*
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -52,6 +55,12 @@ open class HomeLoanBottomSheetDialog : PresenterBottomSheetFragment<HomeLoanSing
     override fun startChartLoading() {
         loan_sheet_error_layout.visibility = View.GONE
         loading_layout.visibility = View.VISIBLE
+
+        val drawable = loading_icon.drawable
+        if (drawable is Animatable) {
+            Timber.d("start animating")
+            drawable.start()
+        }
     }
 
     override fun stopChartLoading() {

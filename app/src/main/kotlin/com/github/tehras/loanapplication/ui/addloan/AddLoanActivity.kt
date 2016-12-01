@@ -1,6 +1,7 @@
 package com.github.tehras.loanapplication.ui.addloan
 
 import android.os.Bundle
+import android.view.View
 import com.github.tehras.loanapplication.AppComponent
 import com.github.tehras.loanapplication.R
 import com.github.tehras.loanapplication.data.remote.models.Loan
@@ -8,6 +9,7 @@ import com.github.tehras.loanapplication.extensions.*
 import com.github.tehras.loanapplication.ui.addloan.fragments.AddLoanBaseFragment
 import com.github.tehras.loanapplication.ui.addloan.fragments.balance.AddLoanBalanceFragment
 import com.github.tehras.loanapplication.ui.addloan.fragments.basic.AddLoanBasicFragment
+import com.github.tehras.loanapplication.ui.addloan.fragments.intro.AddLoanIntroFragment
 import com.github.tehras.loanapplication.ui.base.PresenterActivity
 import kotlinx.android.synthetic.main.activity_add_loan.*
 import timber.log.Timber
@@ -30,11 +32,11 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
 
         if (savedInstanceState == null) {
             //start first fragment
-            AddLoanBasicFragment.instance().startFragment(R.id.add_loan_fragment_container, activity = this)
+            AddLoanIntroFragment.instance().startFragment(R.id.add_loan_fragment_container, activity = this)
             this.enterCircularReveal() //animate
         } else {
             loan = savedInstanceState.getParcelable<Loan>(ARG_LOAN_OBJECT)
-            addLoanStage = AddLoanStage.converToStage(savedInstanceState.getInt(ARG_LOAN_STAGE))
+            addLoanStage = AddLoanStage.convertToStage(savedInstanceState.getInt(ARG_LOAN_STAGE))
         }
     }
 
@@ -54,9 +56,17 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
 
     override fun onBackPressed() {
         if (!supportFragmentManager.popBackStackImmediate()) {
-            //todo animate then close
-            exitCircularReveal(add_loan_prev_button.centerX(), add_loan_prev_button.centerY())
+            if (this.getTopFragment() is AddLoanIntroFragment)
+                exitCircularReveal(add_loan_next_button.centerX(), add_loan_next_button.centerY())
+            else
+                exitCircularReveal(add_loan_prev_button.centerX(), add_loan_prev_button.centerY())
         }
+    }
+
+    fun startAddLoanFlow() {
+        showButtons()
+        AddLoanBasicFragment.instance().startFragment(R.id.add_loan_fragment_container, this)
+        setImage(addLoanStage.bottomGrad)
     }
 
     override fun finish() {
@@ -80,17 +90,22 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
         //check if next is valid
         if (notifyFragmentThatNextWasPressed()) {
             //switch case
-            addLoanStage = AddLoanStage.converToStage(addLoanStage.stage++) //add one more
+            addLoanStage = AddLoanStage.convertToStage(addLoanStage.stage + 1) //add one more
             when (addLoanStage) {
                 AddLoanStage.BASIC_INFORMATION -> {
                     AddLoanBasicFragment.instance().startFragment(R.id.add_loan_fragment_container, this)
                 }
                 AddLoanStage.BALANCE_INFORMATION -> {
-                    AddLoanBalanceFragment.instance(loan).startFragment(R.id.add_loan_fragment_container, activity = this)
-
+                    AddLoanBalanceFragment.instance(loan).startFragment(R.id.add_loan_fragment_container, this, true)
                 }
             }
+            setImage(addLoanStage.bottomGrad)
         }
+    }
+
+    private fun setImage(bottomGrad: Int) {
+        Timber.d("setImage($bottomGrad)")
+        add_loan_bottom_image.populateDrawable(bottomGrad)
     }
 
     private fun notifyFragmentThatNextWasPressed(): Boolean {
@@ -126,6 +141,16 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
     override fun injectDependencies(graph: AppComponent) {
         graph.plus(AddLoanModule(this))
                 .injectTo(this)
+    }
+
+    fun hideButtons() {
+        add_loan_prev_button.visibility = View.INVISIBLE
+        add_loan_next_button.visibility = View.INVISIBLE
+    }
+
+    fun showButtons() {
+        add_loan_prev_button.show()
+        add_loan_next_button.show()
     }
 
 }

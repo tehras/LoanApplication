@@ -90,6 +90,9 @@ dependencies {
     // Chart library
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.0'
 
+    // Loading library
+    compile 'com.github.castorflex.smoothprogressbar:library-circular:1.2.0'
+
     testCompile 'junit:junit:4.12'
 }
 repositories {

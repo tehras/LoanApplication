@@ -51,7 +51,7 @@
 
         <include
             android:id="@+id/loading_layout"
-            layout="@layout/loader_view"
+            layout="@layout/loading_view"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_centerInParent="true" />

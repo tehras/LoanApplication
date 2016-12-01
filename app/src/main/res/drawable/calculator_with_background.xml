@@ -1,0 +1,19 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+            <gradient
+                android:angle="-45"
+                android:endColor="@color/colorPrimaryDark"
+                android:startColor="@color/colorPrimary"
+                android:type="linear" />
+
+        </shape>
+
+    </item>
+    <item
+        android:bottom="42dp"
+        android:drawable="@drawable/calculator"
+        android:top="42dp" />
+
+</layer-list>

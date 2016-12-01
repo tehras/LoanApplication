@@ -16,8 +16,13 @@ fun <T : Fragment> T.addToBundle(f: Bundle.() -> Unit): T {
 }
 
 fun Fragment.startFragment(view: Int, activity: AppCompatActivity) {
-    activity.supportFragmentManager
+    startFragment(view, activity, false)
+}
+
+fun Fragment.startFragment(view: Int, activity: AppCompatActivity, addToStack: Boolean) {
+    val tran = activity.supportFragmentManager
             .beginTransaction()
             .replace(view, this)
-            .commit()
+    if (addToStack) tran.addToBackStack(this.javaClass.simpleName)
+    tran.commit()
 }
