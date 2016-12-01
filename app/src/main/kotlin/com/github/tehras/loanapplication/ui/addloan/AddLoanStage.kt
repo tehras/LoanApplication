@@ -3,7 +3,7 @@ package com.github.tehras.loanapplication.ui.addloan
 import com.github.tehras.loanapplication.R
 
 enum class AddLoanStage(var stage: Int, var bottomGrad: Int) {
-    BASIC_INFORMATION(0, R.drawable.backpack), BALANCE_INFORMATION(1, R.drawable.calculator);
+    BASIC_INFORMATION(0, R.drawable.register), BALANCE_INFORMATION(1, R.drawable.money_bag), OTHER_INFORMATION(2, R.drawable.calculator);
 
     companion object {
         fun convertToStage(i: Int): AddLoanStage {

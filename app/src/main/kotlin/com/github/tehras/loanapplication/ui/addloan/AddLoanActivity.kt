@@ -89,11 +89,12 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
     private fun onNextPressed() {
         //check if next is valid
         if (notifyFragmentThatNextWasPressed()) {
+
             //switch case
             addLoanStage = AddLoanStage.convertToStage(addLoanStage.stage + 1) //add one more
             when (addLoanStage) {
                 AddLoanStage.BASIC_INFORMATION -> {
-                    AddLoanBasicFragment.instance().startFragment(R.id.add_loan_fragment_container, this)
+                    AddLoanBasicFragment.instance().startFragment(R.id.add_loan_fragment_container, this, true)
                 }
                 AddLoanStage.BALANCE_INFORMATION -> {
                     AddLoanBalanceFragment.instance(loan).startFragment(R.id.add_loan_fragment_container, this, true)
@@ -110,12 +111,13 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
 
     private fun notifyFragmentThatNextWasPressed(): Boolean {
         supportFragmentManager.let {
-            val fragments = supportFragmentManager.fragments
-            fragments.let {
-                val lastFragment = fragments[fragments.size - 1] //get last fragment
-                if (lastFragment is AddLoanBaseFragment<*, *>) {
-                    return lastFragment.validateAnswers()
-                }
+            val lastFragment = supportFragmentManager.findFragmentById(R.id.add_loan_fragment_container) //get last fragment
+            if (lastFragment is AddLoanBaseFragment<*, *>) {
+                val isValid = lastFragment.validateAnswers()
+                if (isValid)
+                    lastFragment.commitToLoan(loan)
+
+                return isValid
             }
         }
 

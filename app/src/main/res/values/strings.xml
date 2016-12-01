@@ -32,4 +32,13 @@
     <string name="let_s_get_start_image">Let\'s Get Start Image</string>
     <string name="backpack_graphic">Backpack graphic</string>
     <string name="backdrop_content">backdrop content</string>
+    <string name="add_loan_balance_title">Let\'s establish the money</string>
+    <string name="add_loan_balance_balance_label">Loan Balance</string>
+    <string name="_99_999_99">$99,999.99</string>
+    <string name="base_payments">Base Payments</string>
+    <string name="add_loan_balance_base_payment_hint">$215.00</string>
+    <string name="loan_balance_base_payment_help">Base payment is is the amount you are paying per month</string>
+    <string name="add_loan_balance_extra_hint">$0.00</string>
+    <string name="add_loan_balance_extra_payment_label">Extra Payments</string>
+    <string name="add_loan_balance_extra_payments">This is the extra amount of money you\'re willing to contribute in the futere. You can come back and change this later</string>
 </resources>

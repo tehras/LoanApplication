@@ -1,7 +1,9 @@
 package com.github.tehras.loanapplication.extensions
 
 import android.content.Context
+import android.graphics.PorterDuff
 import android.support.annotation.ColorInt
+import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.Snackbar
@@ -85,4 +87,9 @@ fun ImageView.populateDrawable(i: Int) {
     visibility = View.VISIBLE
     this.setImageDrawable(this.resources.getDrawable(i, null))
     this.animateExpand()
+}
+
+@Suppress("DEPRECATION")
+fun View.filterBackground(@DrawableRes color: Int) {
+    this.background.mutate().setColorFilter(resources.getColor(color), PorterDuff.Mode.SRC_ATOP)
 }

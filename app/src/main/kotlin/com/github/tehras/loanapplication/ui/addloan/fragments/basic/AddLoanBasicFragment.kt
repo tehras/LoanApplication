@@ -1,18 +1,19 @@
 package com.github.tehras.loanapplication.ui.addloan.fragments.basic
 
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.github.tehras.loanapplication.R
+import com.github.tehras.loanapplication.data.remote.models.Loan
 import com.github.tehras.loanapplication.extensions.*
 import com.github.tehras.loanapplication.ui.addloan.fragments.AddLoanBaseComponent
 import com.github.tehras.loanapplication.ui.addloan.fragments.AddLoanBaseFragment
 import kotlinx.android.synthetic.main.fragment_add_loan_basic.*
 
 class AddLoanBasicFragment : AddLoanBaseFragment<AddLoanBasicView, AddLoanBasicPresenter>(), AddLoanBasicView {
+
     override fun injectTo(plus: AddLoanBaseComponent) {
         plus.injectTo(this)
     }
@@ -23,6 +24,11 @@ class AddLoanBasicFragment : AddLoanBaseFragment<AddLoanBasicView, AddLoanBasicP
             return isValidProvider(add_loan_basic_loan_provider)
 
         return isValidLoanName
+    }
+
+    override fun commitToLoan(loan: Loan) {
+        loan.name = add_loan_basic_loan_name.text.toString()
+        loan.provider = add_loan_basic_loan_provider.text.toString()
     }
 
     private fun isValidLoanName(tv: TextView): Boolean {
@@ -42,9 +48,6 @@ class AddLoanBasicFragment : AddLoanBaseFragment<AddLoanBasicView, AddLoanBasicP
     override fun onStart() {
         super.onStart()
 
-        //animate the textViews once visible
-        animateTheViewsIn()
-
         //add text watcher
         add_loan_basic_loan_name.addErrorTextWatcher { isValidLoanName(tv = this) }
     }
@@ -53,13 +56,11 @@ class AddLoanBasicFragment : AddLoanBaseFragment<AddLoanBasicView, AddLoanBasicP
         return inflater.inflate(R.layout.fragment_add_loan_basic, container, false)
     }
 
-    private fun animateTheViewsIn() {
+    override fun animateTheViewsIn() {
         add_loan_loan_name_container.visibility = View.INVISIBLE
         add_loan_loan_provider_container.visibility = View.INVISIBLE
-        @Suppress("DEPRECATION")
-        add_loan_basic_loan_provider.background.mutate().setColorFilter(resources.getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP)
-        @Suppress("DEPRECATION")
-        add_loan_basic_loan_name.background.mutate().setColorFilter(resources.getColor(R.color.colorAccent), PorterDuff.Mode.SRC_ATOP)
+        add_loan_basic_loan_provider.filterBackground(R.color.colorAccent)
+        add_loan_basic_loan_name.filterBackground(R.color.colorAccent)
 
         val animTime = add_loan_loan_name_container.getInteger(android.R.integer.config_mediumAnimTime).toLong()
         add_loan_basic_title.waitForLayoutToFinish {

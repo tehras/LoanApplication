@@ -11,6 +11,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_collapseMode="parallax"
         app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
         <ImageView
@@ -18,8 +19,7 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/backdrop_content"
             android:scaleType="center"
-            android:src="@drawable/backdrop"
-            app:layout_collapseMode="parallax" />
+            android:src="@drawable/backdrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
