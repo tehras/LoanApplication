@@ -1,5 +1,6 @@
 package com.github.tehras.loanapplication
 
+import com.github.tehras.loanapplication.data.cache.LocalCacheModule
 import com.github.tehras.loanapplication.data.network.NetworkModule
 import com.github.tehras.loanapplication.data.remote.ApiModule
 import com.github.tehras.loanapplication.ui.addloan.AddLoanComponent
@@ -19,7 +20,7 @@ import javax.inject.Singleton
  * AppComponent will insert the appropriate modules
  */
 @Singleton
-@Component(modules = arrayOf(AppModule::class, NetworkModule::class, ApiModule::class))
+@Component(modules = arrayOf(AppModule::class, NetworkModule::class, LocalCacheModule::class , ApiModule::class))
 interface AppComponent {
 
     fun injectTo(app: MyApp)

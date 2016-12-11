@@ -21,6 +21,7 @@ import javax.inject.Inject
 
 
 class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), HomeLoanView {
+
     var payments: PaymentsResponse? = null
 
     override fun updateChart(payments: PaymentsResponse, animate: Boolean) {
@@ -178,6 +179,18 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
         } else {
             refreshData()
         }
+    }
+
+    private var networkDataShowing = false
+
+    override fun localDataRetrieved() {
+        if (!networkDataShowing) {
+            local_data_refreshing.show()
+        }
+    }
+
+    override fun networkDataRetrieved() {
+        networkDataShowing = true
     }
 
     companion object {

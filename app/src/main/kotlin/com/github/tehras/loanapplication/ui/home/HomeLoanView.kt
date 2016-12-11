@@ -14,4 +14,7 @@ interface HomeLoanView : MvpView {
 
     fun errorNoNetwork()
     fun errorFetchData()
+
+    fun localDataRetrieved()
+    fun networkDataRetrieved()
 }

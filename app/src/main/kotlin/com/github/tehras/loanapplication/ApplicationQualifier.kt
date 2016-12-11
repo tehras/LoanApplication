@@ -8,4 +8,5 @@ import javax.inject.Qualifier
  * Application Qualifier
  */
 @Qualifier
+@Retention(AnnotationRetention.RUNTIME)
 annotation class ApplicationQualifier

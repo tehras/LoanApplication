@@ -7,9 +7,6 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
-/**
- * Created by tehras on 11/5/16.
- */
 @Module
 class NetworkModule {
 

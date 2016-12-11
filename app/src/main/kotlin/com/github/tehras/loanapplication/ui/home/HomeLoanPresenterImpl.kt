@@ -1,6 +1,8 @@
 package com.github.tehras.loanapplication.ui.home
 
 import android.content.Context
+import com.github.tehras.loanapplication.data.cache.CacheConstants
+import com.github.tehras.loanapplication.data.cache.LocalCache
 import com.github.tehras.loanapplication.data.network.NetworkInteractor
 import com.github.tehras.loanapplication.data.remote.LoanApiService
 import com.github.tehras.loanapplication.data.remote.models.Loan
@@ -22,15 +24,39 @@ class HomeLoanPresenterImpl @Inject constructor(private val apiService: LoanApiS
 
     @Inject
     lateinit var context: Context
+    @Inject
+    lateinit var localCache: LocalCache
 
     override fun showLoanBottomSheet(loan: Loan, activity: HomeLoanActivity) {
         activity.supportFragmentManager.beginTransaction().add(HomeLoanBottomSheetDialog.getInstance(loan), HomeLoanBottomSheetDialog::class.java.simpleName).commit()
     }
 
     private var subscription: Subscription = Subscriptions.unsubscribed()
+    private var localSub: Subscription = Subscriptions.unsubscribed()
 
     override fun getLoans(showLoading: Boolean) {
+
+        var loading = showLoading
         Timber.d("trying to retrieve loans")
+        localSub.unsubscribe()
+        localSub = localCache.isCached(CacheConstants.LOAN_AND_PAYMENTS_KEY)
+                .andThen(localCache.get(CacheConstants.LOAN_AND_PAYMENTS_KEY, PaymentsAndLoans::class.java)
+                        .compose(deliverFirst<PaymentsAndLoans>())
+                        .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()))
+                .subscribe({
+                    Timber.d("loans retrieved from local loan")
+                    view?.stopLoading()
+                    loading = false
+                    view?.updateList(it.loans, showLoading)
+                    view?.updateChart(it.paymentsResponse, showLoading)
+                    view?.localDataRetrieved()
+                    localSub.unsubscribe()
+                }) {
+                    Timber.d("error thrown")
+                }
+
+        addSubscription(localSub)
+
         if (subscription.isUnsubscribed) {
             if (showLoading)
                 view?.startLoading() //show loading
@@ -46,9 +72,12 @@ class HomeLoanPresenterImpl @Inject constructor(private val apiService: LoanApiS
                     .andThen(Observable.zip(loanSearch, chartData, { loans, paymentResponse -> PaymentsAndLoans(paymentResponse, loans) }))
                     .subscribe({//success
                         view?.stopLoading()
-                        view?.updateList(it.loans, showLoading)
-                        view?.updateChart(it.paymentsResponse, showLoading)
+                        view?.networkDataRetrieved()
+                        view?.updateList(it.loans, loading)
+                        view?.updateChart(it.paymentsResponse, loading)
                         subscription.unsubscribe()
+
+                        saveDataToCache(it)
                     }) {//error
                         when (it) {
                             is NetworkInteractor.NetworkUnavailableException -> view?.errorNoNetwork()
@@ -59,6 +88,14 @@ class HomeLoanPresenterImpl @Inject constructor(private val apiService: LoanApiS
 
             addSubscription(subscription)
         }
+    }
+
+    private fun saveDataToCache(it: PaymentsAndLoans) {
+        localSub.unsubscribe()
+        localSub = localCache.save(CacheConstants.LOAN_AND_PAYMENTS_KEY, it)
+                .subscribeOn(Schedulers.io()).subscribe()
+
+        addSubscription(localSub)
     }
 
     override fun bindView(view: HomeLoanView) {
