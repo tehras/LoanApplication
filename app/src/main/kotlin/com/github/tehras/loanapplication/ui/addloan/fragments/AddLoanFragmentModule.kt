@@ -6,6 +6,10 @@ import com.github.tehras.loanapplication.ui.addloan.fragments.balance.AddLoanBal
 import com.github.tehras.loanapplication.ui.addloan.fragments.balance.AddLoanBalancePresenterImpl
 import com.github.tehras.loanapplication.ui.addloan.fragments.basic.AddLoanBasicPresenter
 import com.github.tehras.loanapplication.ui.addloan.fragments.basic.AddLoanBasicPresenterImpl
+import com.github.tehras.loanapplication.ui.addloan.fragments.other.AddLoanOtherPresenter
+import com.github.tehras.loanapplication.ui.addloan.fragments.other.AddLoanOtherPresenterImpl
+import com.github.tehras.loanapplication.ui.addloan.fragments.review.AddLoanReviewPresenter
+import com.github.tehras.loanapplication.ui.addloan.fragments.review.AddLoanReviewPresenterImpl
 import com.github.tehras.loanapplication.ui.base.FragmentModule
 import dagger.Module
 import dagger.Provides
@@ -19,4 +23,10 @@ class AddLoanFragmentModule(fragment: Fragment) : FragmentModule(fragment) {
 
     @Provides @FragmentScope
     fun providesBalanceProvider(presenter: AddLoanBalancePresenterImpl): AddLoanBalancePresenter = presenter
+
+    @Provides @FragmentScope
+    fun providesOtherProvider(presenter: AddLoanOtherPresenterImpl): AddLoanOtherPresenter = presenter
+
+    @Provides @FragmentScope
+    fun providesPreviewProvider(presenter: AddLoanReviewPresenterImpl): AddLoanReviewPresenter = presenter
 }

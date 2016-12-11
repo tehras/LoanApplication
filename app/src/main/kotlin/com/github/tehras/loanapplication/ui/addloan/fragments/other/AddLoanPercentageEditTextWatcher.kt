@@ -1,15 +1,16 @@
-package com.github.tehras.loanapplication.ui.addloan.fragments.balance
+package com.github.tehras.loanapplication.ui.addloan.fragments.other
 
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import java.text.NumberFormat
+import timber.log.Timber
+import java.text.DecimalFormat
 
 /**
  * Add Loan balance Edit Text Watcher
  * This will be used to format balance
  */
-class AddLoanBalanceEditTextWatcher(var editText: EditText) : TextWatcher {
+class AddLoanPercentageEditTextWatcher(var editText: EditText) : TextWatcher {
     override fun afterTextChanged(p0: Editable?) {
 
     }
@@ -24,17 +25,20 @@ class AddLoanBalanceEditTextWatcher(var editText: EditText) : TextWatcher {
         if (!s.toString().equals(current, true)) {
             editText.removeTextChangedListener(this)
 
-            val cleanString = s?.replace(Regex("[$,.]"), "") ?: ""
+            val cleanString = s?.replace(Regex("[%.]"), "") ?: ""
 
             var formatted = ""
+
             if (!cleanString.isEmpty()) {
                 val parsed = cleanString.toDouble()
-                formatted = NumberFormat.getCurrencyInstance().format((parsed / 100))
+                Timber.d("parsed $parsed")
+                formatted = DecimalFormat("###.00").format((parsed / 100)) + "%"
             }
-
             current = formatted
             editText.setText(formatted)
-            editText.setSelection(formatted.length)
+
+            if (formatted.isNotEmpty())
+                editText.setSelection(formatted.length - 1)
 
             editText.addTextChangedListener(this)
         }

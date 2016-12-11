@@ -29,7 +29,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
         val func = { home_payment_chart_layout.updateData(payments.payments, animate) }
         if (animate) {
             home_payment_chart_layout.visibility = View.INVISIBLE
-            home_payment_chart_layout.animateInFromTop(AnimationBuilder.Builder.animationTime(500L).postAnimFunction {
+            home_payment_chart_layout.animateInFromTop(AnimationBuilder.Builder.animationTime(300L).postAnimFunction {
                 func()
             }.build())
         } else {
@@ -41,8 +41,9 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
     override fun updateList(loans: ArrayList<Loan>, animate: Boolean) {
         adapter.updateLoans(loans, animate)
 
+        home_add_button.show()
         home_loan_total_balance.text = getTotalBalance(loans)
-        home_loan_total_balance_layout.animateInFromTop(AnimationBuilder.Builder.animationTime(300L).build())
+        home_loan_total_balance_layout.animateInFromTop(AnimationBuilder.Builder.animationTime(200L).build())
 
         updateEmptyView(false, "No loans found")
     }
@@ -59,6 +60,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
     override fun startLoading() {
         loading_view.show()
         empty_view.hide()
+        home_add_button.hide()
     }
 
     override fun stopLoading() {
@@ -67,11 +69,13 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
 
     override fun errorNoNetwork() {
         stopLoading()
+        home_add_button.hide()
         updateEmptyView(true, "Network error, please try again")
     }
 
     override fun errorFetchData() {
         stopLoading()
+        home_add_button.hide()
         updateEmptyView(true, "Error retrieving data, please try again")
     }
 

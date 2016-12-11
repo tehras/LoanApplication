@@ -18,7 +18,7 @@ fun View.centerY(): Int {
     return (this.top + this.bottom) / 2
 }
 
-fun AppCompatActivity.getTopFragment() : Fragment? {
+fun AppCompatActivity.getTopFragment(): Fragment? {
     return this.supportFragmentManager?.fragments?.get(supportFragmentManager?.fragments?.size?.minus(1) ?: 0)
 }
 
@@ -34,12 +34,11 @@ fun Activity.exitCircularReveal(cx: Int, cy: Int) {
     if (intent.extras != null)
         radius = intent.getIntExtra(EXTRA_RADIUS_COORDINATE, radius) / 2 // the divided by 2 will make it seem like it's going into the button a little more
 
-
     val startRadius = Math.max(root_view.width, root_view.height).toFloat()
 
     // create the animator for this view (the start radius is zero)
     val circularReveal = ViewAnimationUtils.createCircularReveal(root_view, cx, cy, startRadius, radius.toFloat())
-    circularReveal.duration = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+    circularReveal.duration = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong().div(2L)
     circularReveal.addListener(object : Animator.AnimatorListener {
 
         override fun onAnimationEnd(p0: Animator?) {
@@ -119,7 +118,7 @@ fun Activity.enterCircularReveal() {
 
                 // create the animator for this view (the start radius is zero)
                 val circularReveal = ViewAnimationUtils.createCircularReveal(root_view, cx, cy, radius.toFloat(), finalRadius)
-                circularReveal.duration = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+                circularReveal.duration = resources.getInteger(android.R.integer.config_mediumAnimTime).toLong().div(2)
 
                 // make the view visible and start the animation
                 root_view.visibility = View.VISIBLE

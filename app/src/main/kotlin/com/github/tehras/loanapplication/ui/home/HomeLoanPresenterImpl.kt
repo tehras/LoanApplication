@@ -32,8 +32,6 @@ class HomeLoanPresenterImpl @Inject constructor(private val apiService: LoanApiS
     override fun getLoans(showLoading: Boolean) {
         Timber.d("trying to retrieve loans")
         if (subscription.isUnsubscribed) {
-            subscription.unsubscribe() // Unsubscribe from any current running request
-
             if (showLoading)
                 view?.startLoading() //show loading
 

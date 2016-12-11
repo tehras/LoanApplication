@@ -5,9 +5,8 @@ import android.animation.TimeInterpolator
 import android.view.View
 import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
-import timber.log.Timber
 
-private val defaultAnimationTime = 300L
+private val defaultAnimationTime = 150L
 /**
  * Default animator
  *
@@ -23,12 +22,11 @@ class AnimationBuilder private constructor(
         val animationTime: Long,
         val interpolator: TimeInterpolator, val func: View.() -> Unit) {
 
-
     companion object Builder {
 
         private var postAnimation: Long = 0L
         private var func: View.() -> Unit = {}
-        private var animationTime: Long = 300L
+        private var animationTime: Long = 150L
         private var interpolator: TimeInterpolator = AccelerateDecelerateInterpolator()
 
         fun postAnimation(postAnim: Long): Builder {
@@ -37,10 +35,11 @@ class AnimationBuilder private constructor(
         }
 
         fun animationTime(animTime: Long): Builder {
-            animationTime = animTime
+            animationTime = animTime / 2
             return this
         }
 
+        @Suppress("UNUSED")
         fun interpolator(inter: TimeInterpolator): Builder {
             interpolator = inter
             return this
@@ -79,11 +78,45 @@ fun View.animateInFromLeft(builder: AnimationBuilder) {
                 }
 
                 override fun onAnimationStart(p0: Animator?) {
-
+                    this@animateInFromLeft.visibility = View.VISIBLE
                 }
 
                 override fun onAnimationEnd(p0: Animator?) {
-                    builder.func(this@animateInFromLeft)
+                    this@animateInFromLeft.let {
+                        builder.func(it)
+                    }
+                }
+
+            })
+            .setStartDelay(builder.postAnimtion)
+            .start()
+}
+
+/**
+ * Animation that will slide the view from left to right
+ */
+fun View.animateInFromRight(builder: AnimationBuilder) {
+    this.translationX = -this.width.toFloat()
+    this.animate().setDuration(builder.animationTime)
+            .setInterpolator(builder.interpolator)
+            .translationXBy(this.width.toFloat())
+            .setListener(object : Animator.AnimatorListener {
+                override fun onAnimationRepeat(p0: Animator?) {
+
+                }
+
+                override fun onAnimationCancel(p0: Animator?) {
+
+                }
+
+                override fun onAnimationStart(p0: Animator?) {
+                    this@animateInFromRight.visibility = View.VISIBLE
+                }
+
+                override fun onAnimationEnd(p0: Animator?) {
+                    this@animateInFromRight.let {
+                        builder.func(it)
+                    }
                 }
 
             })
@@ -139,8 +172,6 @@ fun View.animateExpand() {
 }
 
 private fun View.animateVertically(builder: AnimationBuilder, translationY: Float) {
-    Timber.d("builder $builder")
-
     this.translationY = translationY
     this.animate().setDuration(builder.animationTime)
             .translationYBy(-translationY)

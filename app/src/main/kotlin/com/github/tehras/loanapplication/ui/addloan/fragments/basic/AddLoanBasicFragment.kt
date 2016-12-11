@@ -50,6 +50,10 @@ class AddLoanBasicFragment : AddLoanBaseFragment<AddLoanBasicView, AddLoanBasicP
 
         //add text watcher
         add_loan_basic_loan_name.addErrorTextWatcher { isValidLoanName(tv = this) }
+        add_loan_basic_loan_provider.addErrorTextWatcher { isValidProvider(this) }
+
+        add_loan_basic_loan_provider.filterBackground(R.color.colorAccent)
+        add_loan_basic_loan_name.filterBackground(R.color.colorAccent)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -57,21 +61,21 @@ class AddLoanBasicFragment : AddLoanBaseFragment<AddLoanBasicView, AddLoanBasicP
     }
 
     override fun animateTheViewsIn() {
-        add_loan_loan_name_container.visibility = View.INVISIBLE
-        add_loan_loan_provider_container.visibility = View.INVISIBLE
-        add_loan_basic_loan_provider.filterBackground(R.color.colorAccent)
-        add_loan_basic_loan_name.filterBackground(R.color.colorAccent)
+        if (firstLoad) {
+            add_loan_loan_name_container?.visibility = View.INVISIBLE
+            add_loan_loan_provider_container?.visibility = View.INVISIBLE
 
-        val animTime = add_loan_loan_name_container.getInteger(android.R.integer.config_mediumAnimTime).toLong()
-        add_loan_basic_title.waitForLayoutToFinish {
-            animateInFromLeft(AnimationBuilder.Builder
-                    .postAnimation(animTime)
-                    .postAnimFunction {
-                        add_loan_loan_name_container.animateInFromBottom(AnimationBuilder
-                                .postAnimFunction { add_loan_loan_provider_container.animateInFromBottom(defaultAnimBuilder) }
-                                .build())
-                    }
-                    .build())
+            val animTime = context.resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+            add_loan_basic_title?.waitForLayoutToFinish {
+                animateInFromLeft(AnimationBuilder.Builder
+                        .postAnimation(animTime)
+                        .postAnimFunction {
+                            add_loan_loan_name_container?.animateInFromBottom(AnimationBuilder
+                                    .postAnimFunction { add_loan_loan_provider_container?.animateInFromBottom(defaultAnimBuilder) }
+                                    .build())
+                        }
+                        .build())
+            }
         }
     }
 

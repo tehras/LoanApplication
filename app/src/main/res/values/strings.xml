@@ -41,4 +41,16 @@
     <string name="add_loan_balance_extra_hint">$0.00</string>
     <string name="add_loan_balance_extra_payment_label">Extra Payments</string>
     <string name="add_loan_balance_extra_payments">This is the extra amount of money you\'re willing to contribute in the futere. You can come back and change this later</string>
+    <string name="add_loan_interest_apr">Interest (APR)</string>
+    <string name="add_loan_interest_apr_hint">1.11%</string>
+    <string name="add_loan_other_repayment_start_date">Repayment Start Date</string>
+    <string name="add_loan_repayment_start_date">Help Me Calculate</string>
+    <string name="add_loan_other_repayment_hint">mm/dd/yyyy</string>
+    <string name="few_more_questions_and_you_re_done">Few More questions, and you\'re done!</string>
+    <string name="add_loan_edit">Edit</string>
+    <string name="add_loan_review_title">Review Information Below</string>
+    <string name="add_loan_basic_info">Basic Information</string>
+    <string name="add_loan_balance_info">Balance Information</string>
+    <string name="add_loan_other_info">Other Information</string>
+    <string name="add_loan_submit">Submit</string>
 </resources>

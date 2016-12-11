@@ -5,7 +5,6 @@ import com.github.tehras.loanapplication.ui.base.Presenter
 
 interface AddLoanPresenter : Presenter<AddLoanView> {
 
-    //todo
     fun createLoan(loan: Loan)
 
 }

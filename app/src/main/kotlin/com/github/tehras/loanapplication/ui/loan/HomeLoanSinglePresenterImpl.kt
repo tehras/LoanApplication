@@ -20,26 +20,31 @@ class HomeLoanSinglePresenterImpl @Inject constructor(private val apiService: Lo
 
 
     override fun getSingleRepayments(loan: Loan?) {
-        Timber.d("trying to retrieve signle repayments")
-        subscription.unsubscribe() // Unsubscribe from any current running request
+        if (subscription.isUnsubscribed) {
+            Timber.d("trying to retrieve signle repayments")
 
-        view?.startChartLoading() //show loading
+            view?.startChartLoading() //show loading
 
-        subscription = networkInteractor.hasNetworkConnectionCompletable()
-                .andThen(apiService.retrieveSingleRepayments(loanId = loan?.key ?: "")
-                        .toObservable().compose(deliverFirst<ArrayList<SinglePaymentResponse>>())
-                        .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()))
-                .subscribe({//success
-                    Timber.d("success ${it[0].payments.size}")
-                    view?.stopChartLoading()
-                    view?.updateChart(it)
-                }) {//error
-                    view?.stopChartLoading()
-                    when (it) {
-                        is NetworkInteractor.NetworkUnavailableException -> view?.errorNoNetwork()
-                        else -> view?.errorFetchData()
+            subscription = networkInteractor.hasNetworkConnectionCompletable()
+                    .andThen(apiService.retrieveSingleRepayments(loanId = loan?.key ?: "")
+                            .toObservable().compose(deliverFirst<ArrayList<SinglePaymentResponse>>())
+                            .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()))
+                    .subscribe({//success
+                        Timber.d("success ${it[0].payments.size}")
+                        view?.stopChartLoading()
+                        view?.updateChart(it)
+
+                        subscription.unsubscribe()
+                    }) {//error
+                        view?.stopChartLoading()
+                        when (it) {
+                            is NetworkInteractor.NetworkUnavailableException -> view?.errorNoNetwork()
+                            else -> view?.errorFetchData()
+                        }
+
+                        subscription.unsubscribe()
                     }
-                }
+        }
 
         addSubscription(subscription)
     }

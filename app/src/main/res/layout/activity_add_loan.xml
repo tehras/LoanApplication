@@ -16,6 +16,15 @@
             android:layout_height="match_parent"
             android:background="@drawable/background_gradients" />
 
+        <ImageView
+            android:id="@+id/add_loan_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|start"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_exit_white"
+            app:layout_anchorGravity="top|start|left" />
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/add_loan_next_button"
             android:layout_width="wrap_content"

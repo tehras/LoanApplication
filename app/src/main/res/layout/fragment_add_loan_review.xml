@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/empty_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="top"
+    android:orientation="vertical"
+    android:visibility="visible"
+    tools:background="@drawable/background_gradients"
+    tools:context=".ui.addloan.AddLoanActivity"
+    tools:ignore="UseCompoundDrawables"
+    tools:visibility="visible">
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/add_loan_submit_button"
+        android:layout_alignParentTop="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/add_loan_review"
+                    style="@style/AddNewLoanText.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin"
+                    android:text="@string/add_loan_review_title" />
+
+            </LinearLayout>
+
+            <include layout="@layout/layout_divider" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/AddNewLoanText.ReviewLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/add_loan_basic_info" />
+
+                <TextView
+                    android:id="@+id/add_loan_balance_basic"
+                    style="@style/AddNewLoanText.ReviewLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:clickable="true"
+                    android:paddingBottom="@dimen/activity_vertical_margin_small_spacing"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin_small_spacing"
+                    android:text="@string/add_loan_edit"
+                    android:textColor="@android:color/holo_blue_bright"
+                    tools:ignore="RelativeOverlap" />
+            </RelativeLayout>
+
+            <include layout="@layout/layout_divider" />
+
+            <LinearLayout
+                android:id="@+id/add_loan_review_basic_info_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        style="@style/AddNewLoanText.ReviewLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:text="@string/loan_name" />
+
+                    <TextView
+                        android:id="@+id/add_loan_basic_loan_name"
+                        style="@style/AddNewLoanText.ReviewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:hint="@string/_99_999_99"
+                        android:inputType="numberDecimal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        style="@style/AddNewLoanText.ReviewLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:text="@string/loan_provider_label" />
+
+
+                    <TextView
+                        android:id="@+id/add_loan_basic_loan_provider"
+                        style="@style/AddNewLoanText.ReviewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:hint="@string/add_loan_balance_base_payment_hint"
+                        android:inputType="numberDecimal" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <include layout="@layout/layout_divider" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/AddNewLoanText.ReviewLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/add_loan_balance_info" />
+
+                <TextView
+                    android:id="@+id/add_loan_balance_edit"
+                    style="@style/AddNewLoanText.ReviewLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:clickable="true"
+                    android:paddingBottom="@dimen/activity_vertical_margin_small_spacing"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin_small_spacing"
+                    android:text="@string/add_loan_edit"
+                    android:textColor="@android:color/holo_blue_bright"
+                    tools:ignore="RelativeOverlap" />
+            </RelativeLayout>
+
+            <include layout="@layout/layout_divider" />
+
+            <LinearLayout
+                android:id="@+id/add_loan_review_balance_info_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        style="@style/AddNewLoanText.ReviewLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:text="@string/add_loan_balance_balance_label" />
+
+                    <TextView
+                        android:id="@+id/add_loan_balance_balance"
+                        style="@style/AddNewLoanText.ReviewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:hint="@string/_99_999_99"
+                        android:inputType="numberDecimal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        style="@style/AddNewLoanText.ReviewLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:text="@string/base_payments" />
+
+
+                    <TextView
+                        android:id="@+id/add_loan_balance_base_payment"
+                        style="@style/AddNewLoanText.ReviewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:hint="@string/add_loan_balance_base_payment_hint"
+                        android:inputType="numberDecimal" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/add_loan_balance_extra_payment_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        style="@style/AddNewLoanText.ReviewLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:text="@string/add_loan_balance_extra_payment_label" />
+
+                    <TextView
+                        android:id="@+id/add_loan_balance_extra_payment"
+                        style="@style/AddNewLoanText.ReviewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:hint="@string/add_loan_balance_extra_hint"
+                        android:inputType="numberDecimal" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <include layout="@layout/layout_divider" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/AddNewLoanText.ReviewLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/add_loan_other_info" />
+
+                <TextView
+                    android:id="@+id/add_loan_other_edit"
+                    style="@style/AddNewLoanText.ReviewLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:clickable="true"
+                    android:paddingBottom="@dimen/activity_vertical_margin_small_spacing"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
+                    android:paddingStart="@dimen/activity_horizontal_margin"
+                    android:paddingTop="@dimen/activity_vertical_margin_small_spacing"
+                    android:text="@string/add_loan_edit"
+                    android:textColor="@android:color/holo_blue_bright"
+                    tools:ignore="RelativeOverlap" />
+            </RelativeLayout>
+
+            <include layout="@layout/layout_divider" />
+
+            <LinearLayout
+                android:id="@+id/add_loan_review_other_info_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        style="@style/AddNewLoanText.ReviewLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:text="@string/add_loan_interest_apr" />
+
+                    <TextView
+                        android:id="@+id/add_loan_other_interest"
+                        style="@style/AddNewLoanText.ReviewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:hint="@string/_99_999_99" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="UselessParent">
+
+                    <TextView
+                        style="@style/AddNewLoanText.ReviewLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:text="@string/sheet_repayment_start_date" />
+
+
+                    <TextView
+                        android:id="@+id/add_loan_other_repayment"
+                        style="@style/AddNewLoanText.ReviewText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="50"
+                        android:hint="@string/add_loan_balance_base_payment_hint" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</RelativeLayout>

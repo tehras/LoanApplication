@@ -19,25 +19,25 @@ class AddLoanBalanceFragment : AddLoanBaseFragment<AddLoanBalanceView, AddLoanBa
     }
 
     override fun validateAnswers(): Boolean {
-        //todo valid answers
-        return true
+        return (isValidBalance() && isValidBasePayment() && isValidExtraPayment())
+    }
+
+    private fun isValidExtraPayment(): Boolean {
+        return add_loan_balance_extra_payment.isValidAmount(0.00, add_loan_balance_balance.convertToDouble() - add_loan_balance_base_payment.convertToDouble())
+    }
+
+    private fun isValidBalance(): Boolean {
+        return add_loan_balance_balance.isValidAmount(0.01, 999999.99)
+    }
+
+    private fun isValidBasePayment(): Boolean {
+        return add_loan_balance_base_payment.isValidAmount(0.01, add_loan_balance_balance.convertToDouble())
     }
 
     companion object {
-        val ARG_LOAN = "arg_loan_parcelable"
 
-        fun instance(loan: Loan): AddLoanBalanceFragment {
-            return AddLoanBalanceFragment().addToBundle { putParcelable(ARG_LOAN, loan) }
-        }
-    }
-
-    lateinit var loan: Loan
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments.let {
-            loan = arguments.getParcelable(ARG_LOAN)
+        fun instance(): AddLoanBalanceFragment {
+            return AddLoanBalanceFragment()
         }
     }
 
@@ -45,39 +45,50 @@ class AddLoanBalanceFragment : AddLoanBaseFragment<AddLoanBalanceView, AddLoanBa
         return inflater.inflate(R.layout.fragment_add_loan_balance, container, false)
     }
 
-    override fun commitToLoan(loan: Loan) {
-        //todo
-    }
+    override fun onStart() {
+        super.onStart()
 
-    override fun animateTheViewsIn() {
-        add_loan_balance_title.visibility = View.INVISIBLE
-        add_loan_balance_container.visibility = View.INVISIBLE
-        add_loan_balance_base_payment_container.visibility = View.INVISIBLE
-        add_loan_balance_extra_payment_container.visibility = View.INVISIBLE
+        add_loan_balance_balance.addErrorTextWatcher { isValidBalance() }
+        add_loan_balance_base_payment.addErrorTextWatcher { isValidBasePayment() }
+        add_loan_balance_extra_payment.addErrorTextWatcher { isValidExtraPayment() }
 
         add_loan_balance_balance.filterBackground(R.color.colorAccent)
         add_loan_balance_base_payment.filterBackground(R.color.colorAccent)
         add_loan_balance_extra_payment.filterBackground(R.color.colorAccent)
 
-
         add_loan_balance_balance.addTextChangedListener(AddLoanBalanceEditTextWatcher(add_loan_balance_balance))
         add_loan_balance_base_payment.addTextChangedListener(AddLoanBalanceEditTextWatcher(add_loan_balance_base_payment))
         add_loan_balance_extra_payment.addTextChangedListener(AddLoanBalanceEditTextWatcher(add_loan_balance_extra_payment))
+    }
 
-        val animTime = context.resources.getInteger(android.R.integer.config_mediumAnimTime).toLong()
+    override fun commitToLoan(loan: Loan) {
+        loan.balance = add_loan_balance_balance.convertToDouble()
+        loan.payment = add_loan_balance_base_payment.convertToDouble()
+        loan.extraPayment = add_loan_balance_extra_payment.convertToDouble()
+    }
 
-        add_loan_balance_title.waitForLayoutToFinish {
-            animateInFromLeft(AnimationBuilder.Builder
-                    .postAnimation(animTime)
-                    .postAnimFunction {
-                        add_loan_balance_container.animateInFromBottom(AnimationBuilder
-                                .postAnimFunction {
-                                    add_loan_balance_base_payment_container.animateInFromBottom(defaultAnimBuilder)
-                                    add_loan_balance_extra_payment_container.animateInFromBottom(defaultAnimBuilder)
-                                }
-                                .build())
-                    }
-                    .build())
+    override fun animateTheViewsIn() {
+        if (firstLoad) {
+            add_loan_balance_title?.visibility = View.INVISIBLE
+            add_loan_balance_container?.visibility = View.INVISIBLE
+            add_loan_balance_base_payment_container?.visibility = View.INVISIBLE
+            add_loan_balance_extra_payment_container?.visibility = View.INVISIBLE
+
+            val animTime = context?.resources?.getInteger(android.R.integer.config_mediumAnimTime)?.toLong() ?: 300L
+
+            add_loan_balance_title?.waitForLayoutToFinish {
+                animateInFromLeft(AnimationBuilder.Builder
+                        .postAnimation(animTime)
+                        .postAnimFunction {
+                            add_loan_balance_container?.animateInFromBottom(AnimationBuilder
+                                    .postAnimFunction {
+                                        add_loan_balance_base_payment_container?.animateInFromBottom(defaultAnimBuilder)
+                                        add_loan_balance_extra_payment_container?.animateInFromBottom(defaultAnimBuilder)
+                                    }
+                                    .build())
+                        }
+                        .build())
+            }
         }
     }
 }

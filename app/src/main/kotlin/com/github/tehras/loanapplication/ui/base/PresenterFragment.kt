@@ -12,6 +12,7 @@ abstract class PresenterFragment<V : MvpView, T : Presenter<V>> : BaseFragment()
 
     private val LOADER_ID = 1
     protected lateinit var presenter: T
+    protected var firstLoad: Boolean = true
 
     // Boolean flag to avoid delivering the Presenter twice. Calling initLoader in onActivityCreated means
     // onLoadFinished will be called twice during configuration change.
@@ -45,6 +46,8 @@ abstract class PresenterFragment<V : MvpView, T : Presenter<V>> : BaseFragment()
     override fun onResume() {
         super.onResume()
         presenter.bindView(getViewLayer())
+
+        firstLoad = false
     }
 
     @CallSuper

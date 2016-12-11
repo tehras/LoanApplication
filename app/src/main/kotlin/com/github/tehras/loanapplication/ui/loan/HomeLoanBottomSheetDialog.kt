@@ -32,6 +32,7 @@ open class HomeLoanBottomSheetDialog : PresenterBottomSheetFragment<HomeLoanSing
     }
 
     override fun updateChart(payments: ArrayList<SinglePaymentResponse>) {
+        @Suppress("DEPRECATION")
         loan_sheet_chart.setChartColor(context.resources.getColor(R.color.colorYellow))
                 .updateData(firstPayment(payments), true)
         loan_sheet_chart.visibility = View.VISIBLE
@@ -103,6 +104,7 @@ open class HomeLoanBottomSheetDialog : PresenterBottomSheetFragment<HomeLoanSing
         loan_sheet_error_layout.visibility = View.GONE
         loan_sheet_chart.visibility = View.INVISIBLE
         loading_layout.visibility = View.GONE
+        @Suppress("DEPRECATION")
         line_chart_layout_background.setBackgroundColor(context.resources.getColor(android.R.color.transparent))
         loan_error_refresh.setOnClickListener {
             presenter.getSingleRepayments(loan)
