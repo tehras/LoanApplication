@@ -7,13 +7,13 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-/**
- * Created by tehras on 11/5/16.
- */
 @Module
 class ApiModule {
+    val connectionTimeout = 5000L
+
     @Provides @Singleton
     fun provideApiService(retrofit: Retrofit): LoanApiService {
         return retrofit.create(LoanApiService::class.java)
@@ -43,7 +43,11 @@ class ApiModule {
             Timber.d("Response retrieved - ${response.isSuccessful} - ${response.code()}")
 
             return@addNetworkInterceptor response
-        }.build()
+        }
+                .connectTimeout(connectionTimeout, TimeUnit.MILLISECONDS)
+                .readTimeout(connectionTimeout, TimeUnit.MILLISECONDS)
+                .writeTimeout(connectionTimeout, TimeUnit.MILLISECONDS)
+                .build()
     }
 
     @Provides @Singleton

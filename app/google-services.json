@@ -1,0 +1,78 @@
+{
+  "project_info": {
+    "project_number": "686710201386",
+    "firebase_url": "https://koshkin-loanapp-625e8.firebaseio.com",
+    "project_id": "koshkin-loanapp-625e8",
+    "storage_bucket": "koshkin-loanapp-625e8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:686710201386:android:cf4b5fe37b673870",
+        "android_client_info": {
+          "package_name": "com.koshkin.loancaluclator.loancalculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "686710201386-7u8f878pn222gp94ilvru3t48c6eru77.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHI2bT199SiDDIkUO93I4vp_eYU9Ddp0s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:686710201386:android:8b9f5fd76dad9ff3",
+        "android_client_info": {
+          "package_name": "com.github.tehras.loanapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "686710201386-7u8f878pn222gp94ilvru3t48c6eru77.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHI2bT199SiDDIkUO93I4vp_eYU9Ddp0s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "686710201386-7u8f878pn222gp94ilvru3t48c6eru77.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,13 +2,17 @@ package com.github.tehras.loanapplication.extensions
 
 import android.animation.Animator
 import android.app.Activity
+import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
 import android.widget.LinearLayout
+import com.github.tehras.loanapplication.ui.home.HomeLoanActivity
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_add_loan.*
+import timber.log.Timber
 
 fun View.centerX(): Int {
     return (this.left + this.right) / 2
@@ -127,3 +131,31 @@ fun Activity.enterCircularReveal() {
         })
     }
 }
+
+
+fun AppCompatActivity.startLoggedInActivity(currentUser: FirebaseUser, func: () -> Unit, showError: () -> Unit) {
+    Timber.d("starting logged activity")
+
+    currentUser.getToken(true).addOnCompleteListener {
+        if (it.isSuccessful) {
+            val token = it.result.token
+            this.startLoggedInActivity(token)
+            func()
+        } else {
+            showError()
+        }
+    }
+}
+
+private
+fun AppCompatActivity.startLoggedInActivity(token: String?) {
+    val intent = Intent(this, HomeLoanActivity::class.java)
+
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+    intent.putExtra(HomeLoanActivity.ARG_TOKEN_KEY, token)
+    startActivity(intent)
+    setResult(Activity.RESULT_OK)
+
+    finish()
+}
+

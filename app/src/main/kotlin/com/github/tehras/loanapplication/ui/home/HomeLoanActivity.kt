@@ -4,9 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.widget.Toast
 import com.github.tehras.loanapplication.AppComponent
 import com.github.tehras.loanapplication.R
 import com.github.tehras.loanapplication.data.remote.models.Loan
@@ -14,7 +14,6 @@ import com.github.tehras.loanapplication.data.remote.models.PaymentsResponse
 import com.github.tehras.loanapplication.extensions.*
 import com.github.tehras.loanapplication.ui.addloan.AddLoanActivity
 import com.github.tehras.loanapplication.ui.base.PresenterActivity
-import kotlinx.android.synthetic.main.activity_add_loan.*
 import kotlinx.android.synthetic.main.activity_loan.*
 import kotlinx.android.synthetic.main.empty_view.*
 import kotlinx.android.synthetic.main.home_app_bar_layout.*
@@ -34,7 +33,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
         val func = { home_payment_chart_layout.updateData(payments.payments, animate) }
         if (animate) {
             home_payment_chart_layout.visibility = View.INVISIBLE
-            home_payment_chart_layout.animateInFromTop(AnimationBuilder.Builder.animationTime(300L).postAnimFunction {
+            home_payment_chart_layout.animateInFromTop(AnimationBuilder.animationTime(300L).postAnimFunction {
                 func()
             }.build())
         } else {
@@ -48,7 +47,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
 
         home_add_button.show()
         home_loan_total_balance.text = getTotalBalance(loans)
-        home_loan_total_balance_layout.animateInFromTop(AnimationBuilder.Builder.animationTime(200L).build())
+        home_loan_total_balance_layout.animateInFromTop(AnimationBuilder.animationTime(200L).build())
 
         updateEmptyView(false, "No loans found")
         //show the add button
@@ -211,6 +210,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
     companion object {
         val ARG_LOANS_KEY = "arg_loans_key"
         val ARG_PAYMENTS_KEY = "arg_payments_key"
+        val ARG_TOKEN_KEY = "token_key"
     }
 
 

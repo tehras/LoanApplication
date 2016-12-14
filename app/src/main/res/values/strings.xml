@@ -1,4 +1,6 @@
 <resources>
+    <string name="client_id">112869145235-krm52qb7cpssl0vg3msij595mnnh5r5d.apps.googleusercontent.com</string>
+
     <string name="app_name">Loan Calculator</string>
     <string name="title_activity_loan">Loan Calculator</string>
     <string name="title_activity_add_loan">New Loan</string>
@@ -53,4 +55,7 @@
     <string name="add_loan_balance_info">Balance Information</string>
     <string name="add_loan_other_info">Other Information</string>
     <string name="add_loan_submit">Submit</string>
+    <string name="google_log_in">Google Log In</string>
+    <string name="welcome_please_login_then_we_can_start_your_experience">Welcome! Please Login, then we can start your experience!</string>
+    <string name="title_activity_login">Login Activity</string>
 </resources>

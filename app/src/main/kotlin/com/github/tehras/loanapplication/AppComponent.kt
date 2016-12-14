@@ -11,6 +11,8 @@ import com.github.tehras.loanapplication.ui.home.HomeLoanComponent
 import com.github.tehras.loanapplication.ui.home.HomeLoanModule
 import com.github.tehras.loanapplication.ui.loan.HomeLoanSingleComponent
 import com.github.tehras.loanapplication.ui.loan.HomeLoanSingleModule
+import com.github.tehras.loanapplication.ui.login.LoginComponent
+import com.github.tehras.loanapplication.ui.login.LoginModule
 import dagger.Component
 import javax.inject.Singleton
 
@@ -20,7 +22,7 @@ import javax.inject.Singleton
  * AppComponent will insert the appropriate modules
  */
 @Singleton
-@Component(modules = arrayOf(AppModule::class, NetworkModule::class, LocalCacheModule::class , ApiModule::class))
+@Component(modules = arrayOf(AppModule::class, NetworkModule::class, LocalCacheModule::class, ApiModule::class))
 interface AppComponent {
 
     fun injectTo(app: MyApp)
@@ -34,4 +36,5 @@ interface AppComponent {
     fun plus(homeSingleLoanModule: HomeLoanSingleModule): HomeLoanSingleComponent
 
     fun plus(addLoanBasicModule: AddLoanFragmentModule): AddLoanBaseComponent
+    fun plus(addLoanBasicModule: LoginModule): LoginComponent
 }

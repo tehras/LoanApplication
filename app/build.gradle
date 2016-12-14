@@ -56,8 +56,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:design:25.0.0'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
 
     //buterrknife
     compile 'com.jakewharton:butterknife:8.4.0'
@@ -94,7 +94,16 @@ dependencies {
     compile 'com.github.castorflex.smoothprogressbar:library-circular:1.2.0'
 
     testCompile 'junit:junit:4.12'
+
+    //firebase setup
+    compile "com.google.firebase:firebase-core:$google_play_services"
+    compile "com.google.firebase:firebase-auth:$google_play_services"
+    compile "com.google.android.gms:play-services-auth:$google_play_services"
 }
 repositories {
     mavenCentral()
 }
+
+apply plugin: 'com.google.gms.google-services'
+
+
