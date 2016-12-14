@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:background="@color/colorPrimary"
-             android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical">
 
 
     <TextView
@@ -17,7 +17,7 @@
         android:paddingTop="@dimen/activity_vertical_margin_large"
         android:text="@string/welcome_please_login_then_we_can_start_your_experience"
         android:textAlignment="center"
-        android:textColor="@color/backgroundColor"/>
+        android:textColor="@color/backgroundColor" />
 
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/login_google_button"
@@ -29,8 +29,12 @@
         android:paddingEnd="16dp"
         android:text="@string/google_log_in"
         android:textColor="@android:color/black"
-        tools:ignore="RtlSymmetry"/>
+        tools:ignore="RtlSymmetry" />
 
-    <include layout="@layout/loading_view"/>
+    <include
+        layout="@layout/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="8dp" />
 
 </FrameLayout>

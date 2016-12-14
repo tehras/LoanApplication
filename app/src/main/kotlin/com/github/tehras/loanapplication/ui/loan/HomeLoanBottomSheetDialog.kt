@@ -78,8 +78,8 @@ open class HomeLoanBottomSheetDialog : PresenterBottomSheetFragment<HomeLoanSing
 
     private var loan: Loan? = null
 
-    override fun onStart() {
-        super.onStart()
+    override fun onPresenterAvailable() {
+        super.onPresenterAvailable()
 
         this.loan = arguments.getParcelable<Loan>(ARG_LOAN)
 

@@ -1,5 +1,6 @@
 package com.github.tehras.loanapplication.ui.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import com.github.tehras.loanapplication.AppComponent
@@ -55,5 +56,10 @@ class LoginActivity : PresenterActivity<LoginView, LoginPresenter>(), LoginView 
         login_google_button.setOnClickListener(presenter)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        presenter.onActivityResult(requestCode, resultCode, data)
+    }
 
 }

@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.github.tehras.loanapplication.AppComponent
 import com.github.tehras.loanapplication.R
+import com.github.tehras.loanapplication.data.remote.ApiModule
 import com.github.tehras.loanapplication.data.remote.models.Loan
 import com.github.tehras.loanapplication.data.remote.models.PaymentsResponse
 import com.github.tehras.loanapplication.extensions.*
@@ -49,7 +50,8 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
         home_loan_total_balance.text = getTotalBalance(loans)
         home_loan_total_balance_layout.animateInFromTop(AnimationBuilder.animationTime(200L).build())
 
-        updateEmptyView(false, "No loans found")
+        if (loans.isEmpty())
+            updateEmptyView(false, "No loans found")
         //show the add button
         home_add_button.show()
     }
@@ -102,6 +104,9 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        ApiModule.OATH_USER_KEY = intent.extras.getString(ARG_TOKEN_KEY)
+
         Timber.d("onCreate")
         setContentView(R.layout.activity_loan)
 
@@ -173,6 +178,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
 
         outState.putParcelableArrayList(ARG_LOANS_KEY, adapter.getLoans())
         outState.putParcelable(ARG_PAYMENTS_KEY, payments)
+        outState.putBoolean(ARG_NETWORK_DATA_SHOWING, networkDataShowing)
 
         super.onSaveInstanceState(outState)
     }
@@ -183,8 +189,11 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
 
         val loans: ArrayList<Loan> = savedInstanceState.getParcelableArrayList(ARG_LOANS_KEY)
         val payments: PaymentsResponse? = savedInstanceState.getSafeParcelable(ARG_PAYMENTS_KEY)
+        networkDataShowing = savedInstanceState.getBoolean(ARG_NETWORK_DATA_SHOWING, false)
 
-        if (payments != null) {
+        Timber.d("loans - $loans")
+
+        if (payments != null && loans.isNotEmpty()) {
             updateList(loans, true)
             updateChart(payments, true)
         } else {
@@ -197,7 +206,6 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
     override fun localDataRetrieved() {
         if (!networkDataShowing) {
             local_data_refreshing.show()
-            Snackbar.make(local_data_refreshing, "Refreshing fresh data", Snackbar.LENGTH_LONG).show()
         }
     }
 
@@ -210,6 +218,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
     companion object {
         val ARG_LOANS_KEY = "arg_loans_key"
         val ARG_PAYMENTS_KEY = "arg_payments_key"
+        val ARG_NETWORK_DATA_SHOWING = "arg_network_data_showing"
         val ARG_TOKEN_KEY = "token_key"
     }
 

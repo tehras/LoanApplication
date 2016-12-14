@@ -1,5 +1,6 @@
 package com.github.tehras.loanapplication.data.remote
 
+import com.github.tehras.loanapplication.BuildConfig
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -12,6 +13,10 @@ import javax.inject.Singleton
 
 @Module
 class ApiModule {
+    companion object {
+        var OATH_USER_KEY = if (BuildConfig.DEBUG) "DEBUG" else ""
+    }
+
     val connectionTimeout = 5000L
 
     @Provides @Singleton
@@ -34,7 +39,7 @@ class ApiModule {
         return OkHttpClient.Builder().addNetworkInterceptor {
             val newRequest = it.request().newBuilder()
                     .addHeader("Content-Type", "application/json")
-                    .addHeader("Authorization", "DEBUG")
+                    .addHeader("Authorization", OATH_USER_KEY)
                     .build()
 
             Timber.d("Request url - ${newRequest.url()} , headers - ${newRequest.headers()}")

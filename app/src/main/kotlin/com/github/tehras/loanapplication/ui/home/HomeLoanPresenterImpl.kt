@@ -81,7 +81,7 @@ class HomeLoanPresenterImpl @Inject constructor(private val apiService: LoanApiS
 
                         saveDataToCache(it)
                     }) {//error
-                        Timber.d("network load error", it)
+                        Timber.d("network load error cause - ${it.cause}, message - ${it.message}")
                         when (it) {
                             is NetworkInteractor.NetworkUnavailableException -> {
                                 view?.networkDataRetrieved()

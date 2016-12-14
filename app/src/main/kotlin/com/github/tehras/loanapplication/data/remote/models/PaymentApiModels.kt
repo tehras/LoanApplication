@@ -8,7 +8,7 @@ import java.util.*
 @PaperParcel
 data class PaymentsResponse(
         @SerializedName("AggregatedPaymentList")
-        var payments: ArrayList<Payment>
+        var payments: ArrayList<Payment>?
 ) : PaperParcelable {
     companion object {
         @JvmField val CREATOR = PaperParcelable.Creator(PaymentsResponse::class.java)
@@ -27,7 +27,7 @@ data class SinglePaymentsResponses(
 @PaperParcel
 data class SinglePaymentResponse(
         @SerializedName("PaymentList")
-        var payments: ArrayList<Payment>
+        var payments: ArrayList<Payment>?
 ) : PaperParcelable {
     companion object {
         @JvmField val CREATOR = PaperParcelable.Creator(SinglePaymentResponse::class.java)

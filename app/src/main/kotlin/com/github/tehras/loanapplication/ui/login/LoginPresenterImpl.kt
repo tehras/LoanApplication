@@ -1,5 +1,6 @@
 package com.github.tehras.loanapplication.ui.login
 
+import android.content.Intent
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -17,10 +18,44 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class LoginPresenterImpl @Inject constructor() : AbstractPresenter<LoginView>(), LoginPresenter, GoogleApiClient.OnConnectionFailedListener {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            Timber.d("Login Request Came Back")
+            val result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
+            if (result.isSuccess) {
+                Timber.d("Login Request Success!")
+                // Google Sign In was successful, authenticate with Firebase
+                val account = result.signInAccount
+                if (account != null)
+                    firebaseAuthWithGoogle(account)
+            } else {
+                Timber.d("Login Request failure, result status - ${result.status}")
+                // Google Sign In failed, update UI appropriately
+                // [START_EXCLUDE]
+                view?.sendBackFailedUse("Error authenticating, please try at a later time")
+                // [END_EXCLUDE]
+            }
+        }
+    }
+
+    companion object {
+        val RC_SIGN_IN = 9001
+    }
 
     private var googleApiClient: GoogleApiClient? = null
     private var auth: FirebaseAuth? = null
     private var authListener: FirebaseAuth.AuthStateListener? = null
+
+    override fun unbindView() {
+        this.googleApiClient?.stopAutoManage(view as AppCompatActivity)
+        this.googleApiClient?.disconnect()
+        authListener?.let {
+            auth?.removeAuthStateListener(it)
+        }
+
+        super.unbindView()
+    }
 
     override fun bindView(view: LoginView) {
         super.bindView(view)
@@ -29,7 +64,9 @@ class LoginPresenterImpl @Inject constructor() : AbstractPresenter<LoginView>(),
             //let's launch the google api client
             // [START config_signin]
             // Configure Google Sign In
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(view.resources.getString(R.string.default_web_client_id)).requestEmail().build()
+            val gso = GoogleSignInOptions
+                    .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(view.getString(R.string.default_web_client_id)).requestEmail().build()
             // [END config_signin]
             this.googleApiClient = GoogleApiClient.Builder(view).enableAutoManage(view /* FragmentActivity */, this /* OnConnectionFailedListener */).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build()
 
@@ -53,6 +90,7 @@ class LoginPresenterImpl @Inject constructor() : AbstractPresenter<LoginView>(),
             // [END auth_state_listener]
         }
 
+        authListener?.let { auth?.addAuthStateListener(it) }
     }
 
     override fun onClick(v: View) {
@@ -73,16 +111,21 @@ class LoginPresenterImpl @Inject constructor() : AbstractPresenter<LoginView>(),
                 return silentSignIn.await()
             }
 
-            override fun onPostExecute(result: GoogleSignInResult?) {
-                if (result!!.isSuccess) {
+            override fun onPostExecute(result: GoogleSignInResult) {
+                if (result.isSuccess) {
                     // Google Sign In was successful, authenticate with Firebase
                     val account = result.signInAccount
                     if (account != null)
                         firebaseAuthWithGoogle(account)
                 } else {
+                    Timber.d("onPostExecute error - ${result.status}")
                     // Google Sign In failed, update UI appropriately
                     // [START_EXCLUDE]
-                    view?.sendBackFailedUse("Error authenticating, please try at a later time")
+                    if (view != null && view is AppCompatActivity) {
+                        val signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient)
+                        (view as AppCompatActivity).startActivityForResult(signInIntent, RC_SIGN_IN)
+                    } else
+                        view?.sendBackFailedUse("Error authenticating, please try at a later time")
                     // [END_EXCLUDE]
                 }
             }

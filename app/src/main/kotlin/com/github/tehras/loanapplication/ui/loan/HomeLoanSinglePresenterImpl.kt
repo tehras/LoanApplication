@@ -30,7 +30,7 @@ class HomeLoanSinglePresenterImpl @Inject constructor(private val apiService: Lo
                             .toObservable().compose(deliverFirst<ArrayList<SinglePaymentResponse>>())
                             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()))
                     .subscribe({//success
-                        Timber.d("success ${it[0].payments.size}")
+                        Timber.d("success ${it[0].payments?.size}")
                         view?.stopChartLoading()
                         view?.updateChart(it)
 

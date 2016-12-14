@@ -23,12 +23,12 @@ class AddLoanReviewFragment : PresenterFragment<AddLoanReviewView, AddLoanReview
         }
     }
 
-    private lateinit var loan: Loan
+    private var loan: Loan? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        savedInstanceState?.let {
+        arguments?.let {
             loan = it.getParcelable(ARG_LOAN)
         }
     }
@@ -58,13 +58,13 @@ class AddLoanReviewFragment : PresenterFragment<AddLoanReviewView, AddLoanReview
     }
 
     private fun populateLayouts() {
-        add_loan_basic_loan_name.text = loan.name
-        add_loan_basic_loan_provider.text = loan.provider
-        add_loan_balance_balance.text = loan.balance.dollarWithTwoDecimalsFormat()
-        add_loan_balance_base_payment.text = loan.payment.dollarWithTwoDecimalsFormat()
-        add_loan_balance_extra_payment.text = loan.extraPayment.dollarWithTwoDecimalsFormat()
-        add_loan_other_interest.text = loan.interest.percentageFormat()
-        add_loan_other_repayment.text = loan.repaymentStartDate.convertToDate("MM/dd/yyyy", "yyyyMMdd")
+        add_loan_basic_loan_name.text = loan?.name
+        add_loan_basic_loan_provider.text = loan?.provider
+        add_loan_balance_balance.text = loan?.balance?.dollarWithTwoDecimalsFormat()
+        add_loan_balance_base_payment.text = loan?.payment?.dollarWithTwoDecimalsFormat()
+        add_loan_balance_extra_payment.text = loan?.extraPayment?.dollarWithTwoDecimalsFormat()
+        add_loan_other_interest.text = loan?.interest?.percentageFormat()
+        add_loan_other_repayment.text = loan?.repaymentStartDate?.convertToDate("MM/dd/yyyy", "yyyyMMdd")
     }
 
     override fun onStop() {

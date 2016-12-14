@@ -34,17 +34,19 @@ abstract class PresenterBottomSheetFragment<V : MvpView, T : Presenter<V>> : Bas
     @CallSuper
     protected fun onPresenterProvided(presenter: T) {
         this.presenter = presenter
+        presenter.bindView(getViewLayer())
+
+        onPresenterAvailable()
+    }
+
+    @CallSuper
+    protected open fun onPresenterAvailable() {
+
     }
 
     @CallSuper
     protected fun onPresenterDestroyed() {
         // Hook for subclasses
-    }
-
-    @CallSuper
-    override fun onStart() {
-        super.onStart()
-        presenter.bindView(getViewLayer())
     }
 
     @CallSuper
