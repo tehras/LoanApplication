@@ -23,6 +23,16 @@ class AddLoanReviewFragment : PresenterFragment<AddLoanReviewView, AddLoanReview
         }
     }
 
+    private lateinit var loan: Loan
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        savedInstanceState?.let {
+            loan = it.getParcelable(ARG_LOAN)
+        }
+    }
+
     override fun injectDependencies(graph: AppComponent) {
         graph.plus(AddLoanFragmentModule(this)).injectTo(this)
     }
@@ -43,7 +53,18 @@ class AddLoanReviewFragment : PresenterFragment<AddLoanReviewView, AddLoanReview
                 (activity as AddLoanActivity).showSubmitButtons()
         }
 
+        populateLayouts()
         attachListeners()
+    }
+
+    private fun populateLayouts() {
+        add_loan_basic_loan_name.text = loan.name
+        add_loan_basic_loan_provider.text = loan.provider
+        add_loan_balance_balance.text = loan.balance.dollarWithTwoDecimalsFormat()
+        add_loan_balance_base_payment.text = loan.payment.dollarWithTwoDecimalsFormat()
+        add_loan_balance_extra_payment.text = loan.extraPayment.dollarWithTwoDecimalsFormat()
+        add_loan_other_interest.text = loan.interest.percentageFormat()
+        add_loan_other_repayment.text = loan.repaymentStartDate.convertToDate("MM/dd/yyyy", "yyyyMMdd")
     }
 
     override fun onStop() {
@@ -59,11 +80,11 @@ class AddLoanReviewFragment : PresenterFragment<AddLoanReviewView, AddLoanReview
      * Attaches listeners
      */
     private fun attachListeners() {
-
+        //we can leave it blank for this fragment
     }
 
     /**
-     * Will animate all the contianers
+     * Will animate all the containers
      */
     private fun animateAllElements() {
         val animTime = context?.resources?.getInteger(android.R.integer.config_mediumAnimTime)?.toLong() ?: 300L

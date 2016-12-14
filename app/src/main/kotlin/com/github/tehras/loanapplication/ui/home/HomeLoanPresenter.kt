@@ -5,6 +5,7 @@ import com.github.tehras.loanapplication.ui.base.Presenter
 
 interface HomeLoanPresenter : Presenter<HomeLoanView> {
 
+    fun getLoans(showLoading: Boolean, forceNetworkCall: Boolean)
     fun getLoans(showLoading: Boolean)
     fun showLoanBottomSheet(loan: Loan, activity: HomeLoanActivity)
 

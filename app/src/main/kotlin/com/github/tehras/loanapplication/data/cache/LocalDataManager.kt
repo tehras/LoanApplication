@@ -7,9 +7,8 @@ interface LocalDataManager {
 
     @Throws(NoLocalDataException::class)
     fun getData(key: String): String
-
     fun saveData(key: String, response: String)
+    fun deleteData(key: String)
 
     fun clearAllData()
-
 }

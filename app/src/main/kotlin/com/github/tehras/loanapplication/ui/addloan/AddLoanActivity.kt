@@ -1,5 +1,6 @@
 package com.github.tehras.loanapplication.ui.addloan
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AlertDialog
@@ -150,8 +151,7 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
     }
 
     override fun loanAddedSuccessfully() {
-        Snackbar.make(root_view, "Loan added successfully", Snackbar.LENGTH_SHORT).show()
-
+        setResult(Activity.RESULT_OK)
         this.finish()
     }
 

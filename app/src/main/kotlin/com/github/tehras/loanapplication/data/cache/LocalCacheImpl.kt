@@ -46,6 +46,18 @@ class LocalCacheImpl @Inject constructor(private val localDataManager: LocalData
         }
     }
 
+   override fun delete(key: String): Observable<Void> {
+        return Observable.create { subscriber ->
+            try {
+                localDataManager.deleteData(key)
+                subscriber.onCompleted()
+            } catch (e: NoLocalDataException) {
+                Timber.d("Could not delete data")
+                subscriber.onError(e)
+            }
+        }
+    }
+
     override fun isCached(key: String): Completable {
         //TODO implement
         return Completable.complete()

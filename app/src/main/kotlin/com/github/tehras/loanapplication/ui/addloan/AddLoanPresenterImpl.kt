@@ -24,7 +24,6 @@ class AddLoanPresenterImpl @Inject constructor(private val apiService: LoanApiSe
 
             subscription = networkInteractor.hasNetworkConnectionCompletable()
                     .andThen(apiService.submitLoan(loan)
-                            .compose(deliverFirst<Loan>())
                             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()))
                     .subscribe({//success
                         view?.stopLoading()

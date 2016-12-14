@@ -110,9 +110,4 @@ class AddLoanOtherFragment : AddLoanBaseFragment<AddLoanOtherView, AddLoanOtherP
         loan.repaymentStartDate = add_loan_other_repayment.convertToDate()
     }
 
-    //final format - yyyyMMdd
-    //start format - MM/dd/yyyy
-    private fun AppCompatEditText.convertToDate(): String {
-        return SimpleDateFormat("yyyMMdd", Locale.US).format(SimpleDateFormat("MM/dd/yyyy", Locale.US).parse(this.text.toString()))
-    }
 }

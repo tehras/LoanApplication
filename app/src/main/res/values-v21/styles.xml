@@ -103,11 +103,13 @@
     <style name="AddNewLoanText.ReviewText" parent="AddNewLoanText.EditText">
         <item name="android:layout_marginTop">@dimen/activity_vertical_margin_small_spacing</item>
         <item name="android:editable">false</item>
+        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:layout_marginBottom">@dimen/activity_vertical_margin_small_spacing</item>
     </style>
 
     <style name="AddNewLoanText.ReviewLabel" parent="AddNewLoanText.Label">
         <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
         <item name="android:layout_marginBottom">0dp</item>
     </style>
 

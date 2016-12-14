@@ -21,6 +21,10 @@ class LocalDataManagerImpl @Inject constructor(val sharedPreferences: SharedPref
         return data
     }
 
+    override fun deleteData(key: String) {
+        sharedPreferences.edit().remove(key).remove(key + "_timestamp").apply()
+    }
+
     override fun saveData(key: String, response: String) {
         sharedPreferences.edit().putString(key, response).putLong(key + "_timestamp", System.currentTimeMillis()).apply()
     }

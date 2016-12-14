@@ -18,6 +18,10 @@ interface LocalCache {
      */
     fun <T> save(key: String, o: T): Observable<T>
 
+    /**
+     * Delete just a single element, for example when an error occurs
+     */
+    fun delete(key: String): Observable<Void>
 
     /**
      * Checks if Data exists already
