@@ -134,7 +134,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
         }
     }
 
-    private fun refreshData() {
+    public fun refreshData() {
         presenter.getLoans(firstLoad)
         firstLoad = false
     }

@@ -52,7 +52,7 @@
                     android:text="@string/add_loan_basic_info"/>
 
                 <TextView
-                    android:id="@+id/add_loan_balance_basic"
+                    android:id="@+id/add_loan_balance_basic_edit"
                     style="@style/AddNewLoanText.ReviewLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

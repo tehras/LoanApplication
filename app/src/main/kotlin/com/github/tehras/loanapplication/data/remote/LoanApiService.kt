@@ -4,10 +4,7 @@ import com.github.tehras.loanapplication.data.remote.models.Loan
 import com.github.tehras.loanapplication.data.remote.models.PaymentsResponse
 import com.github.tehras.loanapplication.data.remote.models.SinglePaymentResponse
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 import rx.Observable
 import rx.Single
 import java.util.*
@@ -25,4 +22,7 @@ interface LoanApiService {
 
     @POST("/loans")
     fun submitLoan(@Body loan: Loan): Observable<Response<Void>>
+
+    @DELETE("/loans/{loanId}")
+    fun deleteLoan(@Path(value = "loanId", encoded = true) loanId: String): Observable<Response<Void>>
 }

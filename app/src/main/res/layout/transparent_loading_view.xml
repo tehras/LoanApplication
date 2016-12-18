@@ -4,8 +4,6 @@
     android:id="@+id/loading_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    android:clickable="true"
     android:orientation="vertical"
     android:visibility="gone"
     tools:ignore="Overdraw"
@@ -26,8 +24,8 @@
 
     <ImageView
         android:id="@+id/loading_icon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_centerInParent="true"
         android:contentDescription="@string/loading_icon"
         android:src="@drawable/ic_trending_up" />

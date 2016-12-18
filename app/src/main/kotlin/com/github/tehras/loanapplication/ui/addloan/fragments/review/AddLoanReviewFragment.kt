@@ -9,6 +9,7 @@ import com.github.tehras.loanapplication.R
 import com.github.tehras.loanapplication.data.remote.models.Loan
 import com.github.tehras.loanapplication.extensions.*
 import com.github.tehras.loanapplication.ui.addloan.AddLoanActivity
+import com.github.tehras.loanapplication.ui.addloan.AddLoanStage
 import com.github.tehras.loanapplication.ui.addloan.fragments.AddLoanFragmentModule
 import com.github.tehras.loanapplication.ui.base.PresenterFragment
 import kotlinx.android.synthetic.main.fragment_add_loan_review.*
@@ -65,6 +66,16 @@ class AddLoanReviewFragment : PresenterFragment<AddLoanReviewView, AddLoanReview
         add_loan_balance_extra_payment.text = loan?.extraPayment?.dollarWithTwoDecimalsFormat()
         add_loan_other_interest.text = loan?.interest?.percentageFormat()
         add_loan_other_repayment.text = loan?.repaymentStartDate?.convertToDate("MM/dd/yyyy", "yyyyMMdd")
+
+        add_loan_balance_basic_edit.setOnClickListener { startReviewFragment(AddLoanStage.BASIC_INFORMATION) }
+        add_loan_balance_edit.setOnClickListener { startReviewFragment(AddLoanStage.BALANCE_INFORMATION) }
+        add_loan_other_edit.setOnClickListener { startReviewFragment(AddLoanStage.OTHER_INFORMATION) }
+    }
+
+    private fun startReviewFragment(stage: AddLoanStage) {
+        if (activity != null && activity is AddLoanActivity) {
+            (activity as AddLoanActivity).startReviewFragment(stage)
+        }
     }
 
     override fun onStop() {
@@ -87,22 +98,24 @@ class AddLoanReviewFragment : PresenterFragment<AddLoanReviewView, AddLoanReview
      * Will animate all the containers
      */
     private fun animateAllElements() {
-        val animTime = context?.resources?.getInteger(android.R.integer.config_mediumAnimTime)?.toLong() ?: 300L
+        if (firstLoad) {
+            val animTime = context?.resources?.getInteger(android.R.integer.config_mediumAnimTime)?.toLong() ?: 300L
 
-        add_loan_review.visibility = View.INVISIBLE
-        add_loan_review_balance_info_container.visibility = View.INVISIBLE
-        add_loan_review_basic_info_container.visibility = View.INVISIBLE
-        add_loan_review_other_info_container.visibility = View.INVISIBLE
+            add_loan_review.visibility = View.INVISIBLE
+            add_loan_review_balance_info_container.visibility = View.INVISIBLE
+            add_loan_review_basic_info_container.visibility = View.INVISIBLE
+            add_loan_review_other_info_container.visibility = View.INVISIBLE
 
-        add_loan_review?.waitForLayoutToFinish {
-            animateInFromLeft(AnimationBuilder.Builder
-                    .postAnimation(animTime)
-                    .postAnimFunction {
-                        add_loan_review_basic_info_container?.animateInFromLeft(defaultAnimBuilder)
-                        add_loan_review_balance_info_container?.animateInFromRight(defaultAnimBuilder)
-                        add_loan_review_other_info_container?.animateInFromBottom(defaultAnimBuilder)
-                    }
-                    .build())
+            add_loan_review?.waitForLayoutToFinish {
+                animateInFromLeft(AnimationBuilder.Builder
+                        .postAnimation(animTime)
+                        .postAnimFunction {
+                            add_loan_review_basic_info_container?.animateInFromLeft(defaultAnimBuilder)
+                            add_loan_review_balance_info_container?.animateInFromRight(defaultAnimBuilder)
+                            add_loan_review_other_info_container?.animateInFromBottom(defaultAnimBuilder)
+                        }
+                        .build())
+            }
         }
     }
 

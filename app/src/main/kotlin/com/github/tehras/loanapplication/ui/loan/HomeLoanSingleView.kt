@@ -11,6 +11,11 @@ interface HomeLoanSingleView : MvpView {
     fun startChartLoading()
     fun stopChartLoading()
 
+    fun startDeleteLoading()
+    fun stopDeleteLoading()
+    fun successDeletingLoan()
+    fun errorDeletingLoan()
+
     fun errorNoNetwork()
     fun errorFetchData()
 

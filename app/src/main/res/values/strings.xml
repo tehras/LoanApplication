@@ -58,4 +58,5 @@
     <string name="google_log_in">Google Log In</string>
     <string name="welcome_please_login_then_we_can_start_your_experience">Welcome! Please Login, then we can start your experience!</string>
     <string name="title_activity_login">Login Activity</string>
+    <string name="delete_button">Delete Button</string>
 </resources>

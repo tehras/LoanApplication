@@ -40,14 +40,23 @@ class AddLoanBasicFragment : AddLoanBaseFragment<AddLoanBasicView, AddLoanBasicP
     }
 
     companion object {
+
         fun instance(): AddLoanBasicFragment {
             return AddLoanBasicFragment()
+        }
+
+        fun instance(loan: Loan, populate: Boolean): AddLoanBasicFragment {
+            return AddLoanBasicFragment().addToBundle { if (populate) injectLoan(loan, this) }
         }
     }
 
     override fun onStart() {
         super.onStart()
 
+        if (prePopulate) {
+            add_loan_basic_loan_name.setText(loan?.name ?: "")
+            add_loan_basic_loan_provider.setText(loan?.provider ?: "")
+        }
         //add text watcher
         add_loan_basic_loan_name.addErrorTextWatcher { isValidLoanName(tv = this) }
         add_loan_basic_loan_provider.addErrorTextWatcher { isValidProvider(this) }

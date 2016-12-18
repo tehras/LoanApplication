@@ -22,6 +22,10 @@ fun View.centerY(): Int {
     return (this.top + this.bottom) / 2
 }
 
+fun Activity.getRootView(): View {
+    return window.decorView.findViewById(android.R.id.content)
+}
+
 fun AppCompatActivity.getTopFragment(): Fragment? {
     return this.supportFragmentManager?.fragments?.get(supportFragmentManager?.fragments?.size?.minus(1) ?: 0)
 }

@@ -2,6 +2,8 @@ package com.github.tehras.loanapplication.ui.loan
 
 import android.graphics.drawable.Animatable
 import android.os.Bundle
+import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +12,9 @@ import com.github.tehras.loanapplication.R
 import com.github.tehras.loanapplication.data.remote.models.Loan
 import com.github.tehras.loanapplication.data.remote.models.Payment
 import com.github.tehras.loanapplication.data.remote.models.SinglePaymentResponse
-import com.github.tehras.loanapplication.extensions.addToBundle
-import com.github.tehras.loanapplication.extensions.dollarWithTwoDecimalsFormat
-import com.github.tehras.loanapplication.extensions.formatDate
-import com.github.tehras.loanapplication.extensions.percentageFormat
+import com.github.tehras.loanapplication.extensions.*
 import com.github.tehras.loanapplication.ui.base.PresenterBottomSheetFragment
+import com.github.tehras.loanapplication.ui.home.HomeLoanActivity
 import kotlinx.android.synthetic.main.bottom_sheet_loan_layout.*
 import kotlinx.android.synthetic.main.home_loan_chart_layout.*
 import kotlinx.android.synthetic.main.loading_view.*
@@ -25,6 +25,32 @@ import java.util.*
  * Home Loan Sheet Dialog
  */
 open class HomeLoanBottomSheetDialog : PresenterBottomSheetFragment<HomeLoanSingleView, HomeLoanSinglePresenter>(), HomeLoanSingleView {
+    override fun startDeleteLoading() {
+        loading_view.show()
+    }
+
+    override fun stopDeleteLoading() {
+        loading_view.hide()
+    }
+
+    override fun successDeletingLoan() {
+        //close the dialog then show Snackbar
+        Snackbar.make(activity.getRootView(), "Loan was deleted successfully", Snackbar.LENGTH_LONG)
+                .show()
+
+        if (activity is HomeLoanActivity) {
+            (activity as HomeLoanActivity).refreshData()
+        }
+
+        this.dialog.dismiss()
+    }
+
+    override fun errorDeletingLoan() {
+        Snackbar.make(activity.getRootView(), "Loan could not be deleted at this time", Snackbar.LENGTH_LONG)
+                .setAction("Retry") {
+                    presenter.deleteLoan(loan)
+                }.show()
+    }
 
     override fun injectDependencies(graph: AppComponent) {
         graph.plus(HomeLoanSingleModule(this))
@@ -94,6 +120,21 @@ open class HomeLoanBottomSheetDialog : PresenterBottomSheetFragment<HomeLoanSing
         loan_sheet_start_date.text = loan?.repaymentStartDate?.formatDate("yyyyMMdd", "MMM dd, yyyy")
 
         loan?.let { presenter.getSingleRepayments(it) }
+
+        loan_delete.setOnClickListener { deleteLoan() }
+        loan_edit.setOnClickListener { editLoan() }
+    }
+
+    private fun editLoan() {
+        //todo
+        Snackbar.make(loan_edit.rootView, "Coming Soon", Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun deleteLoan() {
+        AlertDialog.Builder(context).setMessage("Are you sure you want to delete ${loan?.name ?: "this"}?")
+                .setPositiveButton("Delete", { p1, p2 -> presenter.deleteLoan(loan) })
+                .setNegativeButton("No", { p1, p2 -> p1.dismiss() })
+                .show().setButtonColors(R.color.colorRed, R.color.colorPrimary)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

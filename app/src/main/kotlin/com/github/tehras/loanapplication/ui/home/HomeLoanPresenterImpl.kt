@@ -45,8 +45,9 @@ class HomeLoanPresenterImpl @Inject constructor(private val apiService: LoanApiS
                             .subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()))
                     .subscribe({
                         Timber.d("loans retrieved from local loan")
-                        view?.stopLoading()
                         loading = false
+
+                        view?.stopLoading()
                         view?.updateList(it.loans, showLoading)
                         view?.updateChart(it.paymentsResponse, showLoading)
                         view?.localDataRetrieved()
@@ -72,7 +73,7 @@ class HomeLoanPresenterImpl @Inject constructor(private val apiService: LoanApiS
             subscription = networkInteractor.hasNetworkConnectionCompletable()
                     .andThen(Observable.zip(loanSearch, chartData, { loans, paymentResponse -> PaymentsAndLoans(paymentResponse, loans) }))
                     .subscribe({//success
-                        Timber.d("loans retrieved from network loan")
+                        Timber.d("loans retrieved from network loan - $loading")
                         view?.stopLoading()
                         view?.networkDataRetrieved()
                         view?.updateList(it.loans, loading)

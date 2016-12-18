@@ -2,7 +2,6 @@ package com.github.tehras.loanapplication.ui.addloan.fragments.other
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v7.widget.AppCompatEditText
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +24,10 @@ class AddLoanOtherFragment : AddLoanBaseFragment<AddLoanOtherView, AddLoanOtherP
         fun instance(): AddLoanOtherFragment {
             return AddLoanOtherFragment()
         }
+
+        fun instance(loan: Loan, populate: Boolean): AddLoanOtherFragment {
+            return AddLoanOtherFragment().addToBundle { if (populate) injectLoan(loan, this) }
+        }
     }
 
     override fun onStart() {
@@ -32,6 +35,11 @@ class AddLoanOtherFragment : AddLoanBaseFragment<AddLoanOtherView, AddLoanOtherP
 
         view?.let {
             add_loan_other_repayment_help.setOnClickListener { Snackbar.make(it, "Coming Soon", Snackbar.LENGTH_SHORT).show() }
+        }
+
+        if (prePopulate) {
+            add_loan_other_interest.setText(loan?.interest?.percentageFormat())
+            add_loan_other_repayment.setText(loan?.repaymentStartDate?.convertToDate("MM/dd/yyyy", "yyyyMMdd"))
         }
 
         add_loan_other_interest.addTextChangedListener(AddLoanPercentageEditTextWatcher(add_loan_other_interest))

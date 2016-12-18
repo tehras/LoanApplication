@@ -39,6 +39,10 @@ class AddLoanBalanceFragment : AddLoanBaseFragment<AddLoanBalanceView, AddLoanBa
         fun instance(): AddLoanBalanceFragment {
             return AddLoanBalanceFragment()
         }
+
+        fun instance(loan: Loan, populate: Boolean): AddLoanBalanceFragment {
+            return AddLoanBalanceFragment().addToBundle { if (populate) injectLoan(loan, this) }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,6 +51,12 @@ class AddLoanBalanceFragment : AddLoanBaseFragment<AddLoanBalanceView, AddLoanBa
 
     override fun onStart() {
         super.onStart()
+
+        if (prePopulate) {
+            add_loan_balance_balance.setText(loan?.balance?.dollarWithTwoDecimalsFormat())
+            add_loan_balance_base_payment.setText(loan?.payment?.dollarWithTwoDecimalsFormat())
+            add_loan_balance_extra_payment.setText(loan?.extraPayment?.dollarWithTwoDecimalsFormat())
+        }
 
         add_loan_balance_balance.addErrorTextWatcher { isValidBalance() }
         add_loan_balance_base_payment.addErrorTextWatcher { isValidBasePayment() }

@@ -5,6 +5,12 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/backgroundColor</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogCustom</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorPrimary">@color/colorPrimaryDark</item>
+        <item name="android:colorAccent">@color/colorPrimary</item>
     </style>
 
     <style name="LoanCardLayout">

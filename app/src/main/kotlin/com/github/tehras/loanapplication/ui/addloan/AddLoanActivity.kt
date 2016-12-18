@@ -28,6 +28,8 @@ import timber.log.Timber
  */
 class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddLoanView {
 
+    private var isReview: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,7 +63,10 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
     var loan: Loan = Loan()
 
     override fun onBackPressed() {
-        if (addLoanStage == AddLoanStage.PREVIEW_INFORMATION) {
+        if (isReview) {
+            clearReviewStack()
+//            startReviewFragment()
+        } else if (addLoanStage == AddLoanStage.PREVIEW_INFORMATION) {
             //show alert
             exitAlert("Are you sure you'd like to go back? You'll lose this loan forever.")
         } else if (!supportFragmentManager.popBackStackImmediate()) {
@@ -78,7 +83,9 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
                 .setPositiveButton("YES") { dialog, p1 ->
                     dialog.dismiss()
                     this@AddLoanActivity.finish()
-                }.setNegativeButton("CANCEL") { dialog, p1 -> dialog.dismiss() }.create().show()
+                }.setNegativeButton("CANCEL") { dialog, p1 -> dialog.dismiss() }
+                .show()
+                .setButtonColors(R.color.colorRed, R.color.colorPrimary)
     }
 
     fun startAddLoanFlow() {
@@ -109,7 +116,13 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
     }
 
     private fun onNextPressed() {
-        if (addLoanStage == AddLoanStage.PREVIEW_INFORMATION) {
+        if (isReview) {
+            if (notifyReviewFragmentWasPressed()) {
+                isReview = false
+                clearReviewStack()
+//                startReviewFragment()
+            }
+        } else if (addLoanStage == AddLoanStage.PREVIEW_INFORMATION) {
             Timber.d("insideLoanStage")
             //submit
             presenter.createLoan(loan)
@@ -120,10 +133,23 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
                 AddLoanStage.BASIC_INFORMATION -> AddLoanBasicFragment.instance().startFragment(R.id.add_loan_fragment_container, this, true)
                 AddLoanStage.BALANCE_INFORMATION -> AddLoanBalanceFragment.instance().startFragment(R.id.add_loan_fragment_container, this, true)
                 AddLoanStage.OTHER_INFORMATION -> AddLoanOtherFragment.instance().startFragment(R.id.add_loan_fragment_container, this, true)
-                AddLoanStage.PREVIEW_INFORMATION -> AddLoanReviewFragment.instance(loan).startFragment(R.id.add_loan_fragment_container, this, true)
+                AddLoanStage.PREVIEW_INFORMATION -> {
+                    startReviewFragment()
+                }
             }
             setImage(addLoanStage.bottomGrad)
         }
+    }
+
+    private fun clearReviewStack() {
+        isReview = false
+        edit_loan_fragment_container.visibility = View.INVISIBLE
+        showSubmitButtons()
+        setImage(-1)
+    }
+
+    private fun startReviewFragment() {
+        AddLoanReviewFragment.instance(loan).startFragment(R.id.add_loan_fragment_container, this, true)
     }
 
     private fun setImage(bottomGrad: Int) {
@@ -138,6 +164,21 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
     private fun notifyFragmentThatNextWasPressed(): Boolean {
         supportFragmentManager.let {
             val lastFragment = supportFragmentManager.findFragmentById(R.id.add_loan_fragment_container) //get last fragment
+            if (lastFragment is AddLoanBaseFragment<*, *>) {
+                val isValid = lastFragment.validateAnswers()
+                if (isValid)
+                    lastFragment.commitToLoan(loan)
+
+                return isValid
+            }
+        }
+
+        return false
+    }
+
+    private fun notifyReviewFragmentWasPressed(): Boolean {
+        supportFragmentManager.let {
+            val lastFragment = supportFragmentManager.findFragmentById(R.id.edit_loan_fragment_container) //get last fragment
             if (lastFragment is AddLoanBaseFragment<*, *>) {
                 val isValid = lastFragment.validateAnswers()
                 if (isValid)
@@ -182,6 +223,32 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
         add_loan_prev_button.show()
         add_loan_next_button.show()
         add_loan_exit.visibility = View.VISIBLE
+    }
+
+    /**
+     * Start Review Views
+     */
+    fun startReviewFragment(state: AddLoanStage) {
+        isReview = true
+        edit_loan_fragment_container.visibility = View.VISIBLE
+        when (state) {
+            AddLoanStage.BASIC_INFORMATION -> AddLoanBasicFragment.instance(loan, true).startFragment(R.id.edit_loan_fragment_container, this, false)
+            AddLoanStage.BALANCE_INFORMATION -> AddLoanBalanceFragment.instance(loan, true).startFragment(R.id.edit_loan_fragment_container, this, false)
+            AddLoanStage.OTHER_INFORMATION -> AddLoanOtherFragment.instance(loan, true).startFragment(R.id.edit_loan_fragment_container, this, false)
+            else -> {//leave empty
+            }
+        }
+        setImage(state.bottomGrad)
+        showReviewButtons()
+        add_loan_prev_button.show()
+    }
+
+    @Suppress("DEPRECATION")
+    private fun showReviewButtons() {
+        add_loan_prev_button.setImageDrawable(resources.getDrawable(R.drawable.ic_icon_prev))
+        add_loan_next_button.setImageDrawable(resources.getDrawable(R.drawable.ic_check_mark))
+
+        add_loan_exit.visibility = View.INVISIBLE
     }
 
     @Suppress("DEPRECATION")

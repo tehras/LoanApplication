@@ -17,11 +17,30 @@ class HomeLoanSinglePresenterImpl @Inject constructor(private val apiService: Lo
                                                       private val networkInteractor: NetworkInteractor) : RxPresenter<HomeLoanSingleView>(), HomeLoanSinglePresenter {
 
     private var subscription: Subscription = Subscriptions.unsubscribed()
+    private var deleteSub: Subscription = Subscriptions.unsubscribed()
 
+    override fun deleteLoan(loan: Loan?) {
+        if (
+        deleteSub.isUnsubscribed) {
+            view?.startDeleteLoading()
+
+            deleteSub = networkInteractor.hasNetworkConnectionCompletable()
+                    .andThen(apiService.deleteLoan(loanId = loan?.key ?: "")
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread()))
+                    .subscribe({
+                        view?.successDeletingLoan()
+                        view?.stopDeleteLoading()
+                    }) {
+                        view?.stopDeleteLoading()
+                        view?.errorDeletingLoan()
+                    }
+        }
+    }
 
     override fun getSingleRepayments(loan: Loan?) {
         if (subscription.isUnsubscribed) {
-            Timber.d("trying to retrieve signle repayments")
+            Timber.d("trying to retrieve single repayments")
 
             view?.startChartLoading() //show loading
 

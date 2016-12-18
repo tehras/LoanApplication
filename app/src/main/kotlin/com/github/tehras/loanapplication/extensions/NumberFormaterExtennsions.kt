@@ -9,7 +9,7 @@ fun Double.dollarWithTwoDecimalsFormat(): CharSequence {
 }
 
 fun Double.percentageFormat(): CharSequence {
-    return NumberFormat.getPercentInstance().format(this)
+    return NumberFormat.getPercentInstance().format(this.div(100))
 }
 
 fun String.formatDate(inDate: String, outDate: String): String? {

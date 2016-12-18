@@ -41,12 +41,27 @@
             android:orientation="horizontal"
             tools:ignore="UselessParent">
 
-            <TextView
-                style="@style/AddNewLoanText.Label"
+
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="35"
-                android:text="@string/add_loan_interest_apr" />
+                android:layout_weight="42"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/AddNewLoanText.Label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_loan_interest_apr" />
+
+                <TextView
+                    android:id="@+id/add_loan_other_repayment_help"
+                    style="@style/AddNewLoanText.Explanation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/add_loan_repayment_start_date"
+                    android:textColor="@android:color/holo_blue_bright" />
+            </LinearLayout>
 
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/add_loan_other_interest"
@@ -78,13 +93,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/add_loan_other_repayment_start_date" />
 
-                <TextView
-                    android:id="@+id/add_loan_other_repayment_help"
-                    style="@style/AddNewLoanText.Explanation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/add_loan_repayment_start_date"
-                    android:textColor="@android:color/holo_blue_bright" />
             </LinearLayout>
 
             <android.support.v7.widget.AppCompatEditText

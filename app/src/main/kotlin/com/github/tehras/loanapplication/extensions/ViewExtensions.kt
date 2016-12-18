@@ -7,6 +7,7 @@ import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.design.widget.AppBarLayout
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
@@ -92,4 +93,12 @@ fun ImageView.populateDrawable(i: Int) {
 @Suppress("DEPRECATION")
 fun View.filterBackground(@DrawableRes color: Int) {
     this.background.mutate().setColorFilter(resources.getColor(color), PorterDuff.Mode.SRC_ATOP)
+}
+
+@Suppress("DEPRECATION")
+fun AlertDialog.setButtonColors(@ColorInt positiveColor: Int, @ColorInt negativeColor: Int): AlertDialog {
+    this.getButton(android.content.DialogInterface.BUTTON_POSITIVE).setTextColor(this.context.resources.getColor(positiveColor))
+    this.getButton(android.content.DialogInterface.BUTTON_NEGATIVE).setTextColor(this.context.resources.getColor(negativeColor))
+
+    return this
 }
