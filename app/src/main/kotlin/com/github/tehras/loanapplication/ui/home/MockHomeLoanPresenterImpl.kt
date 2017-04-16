@@ -8,8 +8,8 @@ import com.github.tehras.loanapplication.data.remote.models.Payment
 import com.github.tehras.loanapplication.data.remote.models.PaymentsResponse
 import com.github.tehras.loanapplication.ui.base.rx.RxPresenter
 import com.github.tehras.loanapplication.ui.loan.HomeLoanBottomSheetDialog
-import rx.Subscription
-import rx.subscriptions.Subscriptions
+import io.reactivex.disposables.Disposable
+import io.reactivex.disposables.Disposables
 import java.util.*
 import javax.inject.Inject
 
@@ -29,7 +29,7 @@ class MockHomeLoanPresenterImpl @Inject constructor(private val apiService: Loan
         activity.supportFragmentManager.beginTransaction().add(HomeLoanBottomSheetDialog.getInstance(loan), HomeLoanBottomSheetDialog::class.java.simpleName).commit()
     }
 
-    private var subscription: Subscription = Subscriptions.unsubscribed()
+    private var subscription: Disposable = Disposables.empty()
 
     override fun getLoans(showLoading: Boolean) {
         view?.stopLoading()
@@ -53,7 +53,7 @@ class MockHomeLoanPresenterImpl @Inject constructor(private val apiService: Loan
         super.bindView(view)
 
         // If we have a currently running subscription it means we should set the view to loading
-        if (!subscription.isUnsubscribed) {
+        if (!subscription.isDisposed) {
             view.startLoading()
         }
     }

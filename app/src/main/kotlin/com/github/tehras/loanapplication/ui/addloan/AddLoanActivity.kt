@@ -80,10 +80,10 @@ class AddLoanActivity : PresenterActivity<AddLoanView, AddLoanPresenter>(), AddL
     private fun exitAlert(message: String) {
         AlertDialog.Builder(this)
                 .setMessage(message)
-                .setPositiveButton("YES") { dialog, p1 ->
+                .setPositiveButton("YES") { dialog, _ ->
                     dialog.dismiss()
                     this@AddLoanActivity.finish()
-                }.setNegativeButton("CANCEL") { dialog, p1 -> dialog.dismiss() }
+                }.setNegativeButton("CANCEL") { dialog, _ -> dialog.dismiss() }
                 .show()
                 .setButtonColors(R.color.colorRed, R.color.colorPrimary)
     }

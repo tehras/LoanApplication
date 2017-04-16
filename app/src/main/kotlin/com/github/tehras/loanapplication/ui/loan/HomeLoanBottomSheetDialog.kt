@@ -132,7 +132,7 @@ open class HomeLoanBottomSheetDialog : PresenterBottomSheetFragment<HomeLoanSing
 
     private fun deleteLoan() {
         AlertDialog.Builder(context).setMessage("Are you sure you want to delete ${loan?.name ?: "this"}?")
-                .setPositiveButton("Delete", { p1, p2 -> presenter.deleteLoan(loan) })
+                .setPositiveButton("Delete", { _, _ -> presenter.deleteLoan(loan) })
                 .setNegativeButton("No", { p1, p2 -> p1.dismiss() })
                 .show().setButtonColors(R.color.colorRed, R.color.colorPrimary)
     }

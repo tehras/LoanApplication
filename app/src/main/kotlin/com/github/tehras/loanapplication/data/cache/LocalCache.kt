@@ -1,7 +1,8 @@
 package com.github.tehras.loanapplication.data.cache
 
-import rx.Completable
-import rx.Observable
+import io.reactivex.Completable
+import io.reactivex.Observable
+
 
 /**
  * This Local Cache will fetch the data object if available

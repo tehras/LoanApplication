@@ -1,8 +1,8 @@
 package com.github.tehras.loanapplication.data.cache
 
 import com.google.gson.Gson
-import rx.Completable
-import rx.Observable
+import io.reactivex.Completable
+import io.reactivex.Observable
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -23,13 +23,13 @@ class LocalCacheImpl @Inject constructor(private val localDataManager: LocalData
                 val data: T? = Gson().fromJson(localDataManager.getData(key), clazz)
                 if (data != null) {
                     subscriber.onNext(data)
-                    subscriber.onCompleted()
-                } else {
-                    subscriber.onError(NoLocalDataException())
                 }
+//                else {
+//                    subscriber.onError(NoLocalDataException())
+//                }
             } catch (e: NoLocalDataException) {
                 Timber.d("No Local Data Found")
-                subscriber.onError(e)
+//                subscriber.onError(e)
             }
         }
     }
@@ -38,7 +38,7 @@ class LocalCacheImpl @Inject constructor(private val localDataManager: LocalData
         return Observable.create { subscriber ->
             try {
                 localDataManager.saveData(key, Gson().toJson(o))
-                subscriber.onCompleted()
+                subscriber.onComplete()
             } catch (e: NoLocalDataException) {
                 Timber.d("No Local Data Found")
                 subscriber.onError(e)
@@ -46,11 +46,11 @@ class LocalCacheImpl @Inject constructor(private val localDataManager: LocalData
         }
     }
 
-   override fun delete(key: String): Observable<Void> {
+    override fun delete(key: String): Observable<Void> {
         return Observable.create { subscriber ->
             try {
                 localDataManager.deleteData(key)
-                subscriber.onCompleted()
+                subscriber.onComplete()
             } catch (e: NoLocalDataException) {
                 Timber.d("Could not delete data")
                 subscriber.onError(e)

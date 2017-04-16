@@ -3,19 +3,14 @@ package com.github.tehras.loanapplication.ui.base.rx
 import android.support.annotation.CallSuper
 import com.github.tehras.loanapplication.ui.base.AbstractPresenter
 import com.github.tehras.loanapplication.ui.base.MvpView
-import com.github.tehras.loanapplication.ui.base.rx.delivery.DeliverFirst
-import com.github.tehras.loanapplication.ui.base.rx.delivery.DeliverLatest
-import com.github.tehras.loanapplication.ui.base.rx.delivery.DeliverReplay
-import rx.Observable
-import rx.Subscription
-import rx.lang.kotlin.plusAssign
-import rx.subjects.BehaviorSubject
-import rx.subscriptions.CompositeSubscription
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.BehaviorSubject
 
 
 abstract class RxPresenter<V : MvpView> : AbstractPresenter<V>() {
 
-    protected val subscriptions: CompositeSubscription = CompositeSubscription()
+    protected val subscriptions: CompositeDisposable = CompositeDisposable()
     private val viewState: BehaviorSubject<Boolean> = BehaviorSubject.create()
 
     init {
@@ -37,7 +32,7 @@ abstract class RxPresenter<V : MvpView> : AbstractPresenter<V>() {
     @CallSuper
     override fun onDestroy() {
         super.onDestroy()
-        viewState.onCompleted()
+        viewState.onComplete()
         clearSubscriptions()
     }
 
@@ -45,42 +40,8 @@ abstract class RxPresenter<V : MvpView> : AbstractPresenter<V>() {
         subscriptions.clear()
     }
 
-    fun addSubscription(subscription: Subscription) {
-        subscriptions += subscription
+    fun addSubscription(subscription: Disposable) {
+        subscriptions.add(subscription)
     }
-
-    /**
-     * Returns an Observable which omits the current state of the view. This observable emits
-     * true when the view is attached and false when it is detached.
-     */
-    fun getViewState(): Observable<Boolean> = viewState.asObservable()
-
-
-    /**
-     * Returns an {@link rx.Observable.Transformer} that delays emission from the source {@link rx.Observable}.
-     * <p>
-     * {@link DeliverFirst} delivers only the first onNext value that has been emitted by the source observable.
-     *
-     * @param <T> the type of source observable emissions
-     */
-    fun <T> deliverFirst(): DeliverFirst<T> = DeliverFirst(getViewState())
-
-    /**
-     * Returns an {@link rx.Observable.Transformer} that delays emission from the source {@link rx.Observable}.
-     * <p>
-     * {@link DeliverLatest} keeps the latest onNext value and emits it when there is attached view.
-     *
-     * @param <T> the type of source observable emissions
-     */
-    fun <T> deliverLatest(): DeliverLatest<T> = DeliverLatest(getViewState())
-
-    /**
-     * Returns an {@link rx.Observable.Transformer} that delays emission from the source {@link rx.Observable}.
-     * <p>
-     * {@link DeliverReplay} keeps all onNext values and emits them each time a new view gets attached.
-     *
-     * @param <T> the type of source observable emissions
-     */
-    fun <T> deliverReplay(): DeliverReplay<T> = DeliverReplay(getViewState())
 
 }

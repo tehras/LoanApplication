@@ -32,7 +32,7 @@ fun ViewGroup.hide() {
 }
 
 fun AppBarLayout.setupElevationListener(toolbar: Toolbar) {
-    this.addOnOffsetChangedListener { appBarLayout, i ->
+    this.addOnOffsetChangedListener { _, i ->
         if (Math.abs(i) > 0)
             toolbar.elevateToolbar()
         else

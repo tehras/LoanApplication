@@ -23,11 +23,7 @@ abstract class PresenterActivity<V : MvpView, T : Presenter<V>> : BaseActivity()
         super.onCreate(savedInstanceState)
         initLoader()
 
-        if (savedInstanceState == null) {
-            this.freshStart = true
-        } else {
-            this.freshStart = false
-        }
+        this.freshStart = savedInstanceState == null
     }
 
     @CallSuper

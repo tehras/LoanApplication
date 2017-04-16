@@ -1,10 +1,7 @@
 package com.github.tehras.loanapplication.data.network
 
-import rx.Completable
+import io.reactivex.Completable
 
-/**
- * Created by tehras on 11/5/16.
- */
 interface NetworkInteractor {
     fun hasNetworkConnection(): Boolean
     fun hasNetworkConnectionCompletable(): Completable
