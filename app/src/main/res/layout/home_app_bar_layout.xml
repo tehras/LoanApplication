@@ -92,7 +92,6 @@
 
     </FrameLayout>
 
-
     <com.github.tehras.loanapplication.ui.home.HomePaymentsChartLayout
         android:id="@+id/home_payment_chart_layout"
         android:layout_width="match_parent"

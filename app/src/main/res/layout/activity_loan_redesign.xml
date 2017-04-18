@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         tools:context=".ui.home.HomeLoanActivity">
 
+
         <include layout="@layout/home_loan_content_layout" />
 
         <include layout="@layout/empty_view" />

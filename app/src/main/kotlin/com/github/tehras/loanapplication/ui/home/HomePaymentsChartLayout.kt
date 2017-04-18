@@ -39,7 +39,7 @@ class HomePaymentsChartLayout(context: Context?, attrs: AttributeSet?, defStyleA
     init {
         View.inflate(context, R.layout.home_loan_chart_layout, this)
 
-        color = context?.resources?.getColor(R.color.colorPrimary) ?: 0
+        color = context?.resources?.getColor(R.color.colorYellow) ?: 0
         line_chart_layout.initHomeLayout()
     }
 

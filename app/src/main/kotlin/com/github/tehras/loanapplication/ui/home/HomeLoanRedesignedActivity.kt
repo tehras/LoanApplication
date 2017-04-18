@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.github.tehras.loanapplication.AppComponent
@@ -16,6 +17,7 @@ import com.github.tehras.loanapplication.ui.addloan.AddLoanActivity
 import com.github.tehras.loanapplication.ui.base.PresenterActivity
 import kotlinx.android.synthetic.main.activity_loan.*
 import kotlinx.android.synthetic.main.empty_view.*
+import kotlinx.android.synthetic.main.home_app_bar_layout.*
 import kotlinx.android.synthetic.main.home_loan_content_layout.*
 import kotlinx.android.synthetic.main.loading_view.*
 import timber.log.Timber
@@ -60,11 +62,35 @@ class HomeLoanRedesignedActivity : PresenterActivity<HomeLoanView, HomeLoanPrese
 
 
     override fun updateList(loans: ArrayList<Loan>, animate: Boolean) {
+        adapter?.loans = loans
+        adapter?.notifyDataSetChanged()
 
+        home_add_button.show()
+        home_loan_total_balance_redesign.text = getTotalBalance(loans)
+        home_loan_total_balance_layout_redesign.animateInFromTop(AnimationBuilder.animationTime(200L).build())
+    }
+
+    private fun getTotalBalance(loans: ArrayList<Loan>): CharSequence? {
+        var totalBalance: Double = 0.toDouble()
+        loans.forEach {
+            totalBalance += it.balance
+        }
+
+        return totalBalance.dollarWithTwoDecimalsFormat()
     }
 
     override fun updateChart(payments: PaymentsResponse, animate: Boolean) {
+        this.payments = payments
 
+        val func = { home_payment_chart_layout_redesign.updateData(payments.payments, animate) }
+        if (animate) {
+            home_payment_chart_layout_redesign.visibility = View.INVISIBLE
+            home_payment_chart_layout_redesign.animateInFromTop(AnimationBuilder.animationTime(300L).postAnimFunction {
+                func()
+            }.build())
+        } else {
+            func()
+        }
     }
 
     override fun startLoading() {
@@ -147,8 +173,19 @@ class HomeLoanRedesignedActivity : PresenterActivity<HomeLoanView, HomeLoanPrese
 
     private fun setupViewPager() {
         this.adapter = HomeLoanPagerAdapter(null)
+        home_view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                Timber.d("onPageScrolled - $position, positionOffset - $positionOffset, positionOffsetPixel - $positionOffsetPixels")
+                this@HomeLoanRedesignedActivity.adapter?.scrolled(position, positionOffset, positionOffsetPixels)
+            }
+        })
         home_view_pager.adapter = adapter
-        listRecyclerView.layoutManager = layoutManager
 
 //        adapter.setClickListener {
 //            onItemClick(it)
@@ -180,7 +217,6 @@ class HomeLoanRedesignedActivity : PresenterActivity<HomeLoanView, HomeLoanPrese
         val ARG_LOANS_KEY = "arg_loans_key"
         val ARG_PAYMENTS_KEY = "arg_payments_key"
         val ARG_NETWORK_DATA_SHOWING = "arg_network_data_showing"
-        val ARG_TOKEN_KEY = "token_key"
     }
 
     lateinit var component: HomeLoanComponent

@@ -6,12 +6,12 @@
     <color name="colorPrimaryDark">#00695C</color>
     <color name="colorPrimaryLight">#4DB6AC</color>
     <color name="colorAccent">#FFC107</color>
-    <color name="colorYellow">@color/colorAccent</color>
+    <color name="colorYellow">#FFC107</color>
     <color name="colorRed">#F44336</color>
 
-    <color name="cardPrimary">#673ab7</color>
-    <color name="cardPrimaryDark">#FF512da8</color>
-    <color name="cardPrimaryLight">#FF9575cd</color>
+    <color name="cardPrimary">@color/colorPrimary</color>
+    <color name="cardPrimaryDark">@color/colorPrimaryDarkTransparent</color>
+    <color name="cardPrimaryLight">@color/colorPrimaryLight</color>
 
     <color name="backgroundColor">#FFFFFF</color>
     <color name="hintColor">#99FFFFFF</color>

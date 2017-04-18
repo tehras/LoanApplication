@@ -52,8 +52,6 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
 
         if (loans.isEmpty())
             updateEmptyView(false, "No loans found")
-        //show the add button
-        home_add_button.show()
     }
 
     private fun getTotalBalance(loans: ArrayList<Loan>): CharSequence? {
