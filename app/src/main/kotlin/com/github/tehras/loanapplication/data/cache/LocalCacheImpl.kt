@@ -23,13 +23,13 @@ class LocalCacheImpl @Inject constructor(private val localDataManager: LocalData
                 val data: T? = Gson().fromJson(localDataManager.getData(key), clazz)
                 if (data != null) {
                     subscriber.onNext(data)
+                    subscriber.onComplete()
+                } else {
+                    subscriber.onError(NoLocalDataException())
                 }
-//                else {
-//                    subscriber.onError(NoLocalDataException())
-//                }
             } catch (e: NoLocalDataException) {
                 Timber.d("No Local Data Found")
-//                subscriber.onError(e)
+                subscriber.onError(e)
             }
         }
     }
