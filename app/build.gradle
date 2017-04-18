@@ -102,6 +102,7 @@ dependencies {
     compile "com.google.firebase:firebase-core:$google_play_services"
     compile "com.google.firebase:firebase-auth:$google_play_services"
     compile "com.google.android.gms:play-services-auth:$google_play_services"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }
 repositories {
     mavenCentral()

@@ -9,7 +9,13 @@
     <color name="colorYellow">@color/colorAccent</color>
     <color name="colorRed">#F44336</color>
 
+    <color name="cardPrimary">#673ab7</color>
+    <color name="cardPrimaryDark">#FF512da8</color>
+    <color name="cardPrimaryLight">#FF9575cd</color>
+
     <color name="backgroundColor">#FFFFFF</color>
     <color name="hintColor">#99FFFFFF</color>
     <color name="helpColor">#DDFFFFFF</color>
+
+    <color name="text_color_card">#FFFFFF</color>
 </resources>

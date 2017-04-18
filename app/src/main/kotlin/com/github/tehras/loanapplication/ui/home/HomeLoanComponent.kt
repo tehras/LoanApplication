@@ -8,4 +8,5 @@ import dagger.Subcomponent
 interface HomeLoanComponent {
 
     fun injectTo(activity: HomeLoanActivity)
+    fun injectTo(activity: HomeLoanRedesignedActivity)
 }
