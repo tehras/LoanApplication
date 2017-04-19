@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-
+import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.github.tehras.loanapplication.AppComponent
@@ -18,40 +18,56 @@ import com.github.tehras.loanapplication.ui.base.PresenterActivity
 import kotlinx.android.synthetic.main.activity_loan.*
 import kotlinx.android.synthetic.main.empty_view.*
 import kotlinx.android.synthetic.main.home_app_bar_layout.*
+import kotlinx.android.synthetic.main.home_loan_content_layout.*
 import kotlinx.android.synthetic.main.loading_view.*
 import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
-
 class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), HomeLoanView {
-
     var payments: PaymentsResponse? = null
+    @Inject
+    lateinit var layoutManager: LinearLayoutManager
+    private var firstLoad: Boolean = true
 
-    override fun updateChart(payments: PaymentsResponse, animate: Boolean) {
-        this.payments = payments
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        val func = { home_payment_chart_layout.updateData(payments.payments, animate) }
-        if (animate) {
-            home_payment_chart_layout.visibility = View.INVISIBLE
-            home_payment_chart_layout.animateInFromTop(AnimationBuilder.animationTime(300L).postAnimFunction {
-                func()
-            }.build())
-        } else {
-            func()
-        }
+        ApiModule.OATH_USER_KEY = intent.extras.getString(ARG_TOKEN_KEY)
 
+        Timber.d("onCreate")
+        setContentView(R.layout.activity_loan_redesign)
+
+        setupViewPager()
+        setupFab()
     }
 
+    private fun setupFab() {
+        home_add_button.setOnClickListener {
+            val intent = Intent(this, AddLoanActivity::class.java)
+            intent.putExtra(EXTRA_X_COORDINATE, home_add_button.centerX())
+            intent.putExtra(EXTRA_Y_COORDINATE, (home_add_button.centerY())) //this had to be done to adjust for the toolbar
+            intent.putExtra(EXTRA_RADIUS_COORDINATE, home_add_button.right - home_add_button.left)
+
+            startActivityForResult(intent, create_loan_activity)
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (freshStart)
+            refreshData()
+    }
+
+
     override fun updateList(loans: ArrayList<Loan>, animate: Boolean) {
-        adapter.updateLoans(loans, animate)
+        adapter?.loans = loans
+        adapter?.notifyDataSetChanged()
 
         home_add_button.show()
-        home_loan_total_balance.text = getTotalBalance(loans)
-        home_loan_total_balance_layout.animateInFromTop(AnimationBuilder.animationTime(200L).build())
-
-        if (loans.isEmpty())
-            updateEmptyView(false, "No loans found")
+        home_loan_total_balance_redesign.text = getTotalBalance(loans)
+        home_loan_total_balance_layout_redesign.animateInFromTop(AnimationBuilder.animationTime(200L).build())
     }
 
     private fun getTotalBalance(loans: ArrayList<Loan>): CharSequence? {
@@ -61,6 +77,20 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
         }
 
         return totalBalance.dollarWithTwoDecimalsFormat()
+    }
+
+    override fun updateChart(payments: PaymentsResponse, animate: Boolean) {
+        this.payments = payments
+
+        val func = { home_payment_chart_layout_redesign.updateData(payments.payments, animate) }
+        if (animate) {
+            home_payment_chart_layout_redesign.visibility = View.INVISIBLE
+            home_payment_chart_layout_redesign.animateInFromTop(AnimationBuilder.animationTime(300L).postAnimFunction {
+                func()
+            }.build())
+        } else {
+            func()
+        }
     }
 
     override fun startLoading() {
@@ -82,78 +112,13 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
     override fun errorFetchData() {
         stopLoading()
         home_add_button.hide()
-        local_data_refreshing.hide()
+        local_data_refreshing_redesigned.hide()
         updateEmptyView(true, "Error retrieving data, please try again")
     }
 
-    lateinit var component: HomeLoanComponent
-
-    override fun injectDependencies(graph: AppComponent) {
-        this.component = graph.plus(HomeLoanModule(this))
-        this.component.injectTo(this)
-    }
-
-
-    @Inject
-    lateinit var layoutManager: LinearLayoutManager
-    @Inject
-    lateinit var adapter: HomeLoanListAdapter
-    private var firstLoad: Boolean = true
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        ApiModule.OATH_USER_KEY = intent.extras.getString(ARG_TOKEN_KEY)
-
-        Timber.d("onCreate")
-        setContentView(R.layout.activity_loan)
-
-        setupRecyclerView()
-        setupFab()
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        if (freshStart)
-            refreshData()
-    }
-
-    private val create_loan_activity = 1
-
-    private fun setupFab() {
-        home_add_button.setOnClickListener {
-            val intent = Intent(this, AddLoanActivity::class.java)
-            intent.putExtra(EXTRA_X_COORDINATE, home_add_button.centerX())
-            intent.putExtra(EXTRA_Y_COORDINATE, (home_add_button.centerY())) //this had to be done to adjust for the toolbar
-            intent.putExtra(EXTRA_RADIUS_COORDINATE, home_add_button.right - home_add_button.left)
-
-            startActivityForResult(intent, create_loan_activity)
-        }
-    }
-
-    public fun refreshData() {
-        presenter.getLoans(firstLoad)
-        firstLoad = false
-    }
-
-    private fun setupRecyclerView() {
-        listRecyclerView.adapter = adapter
-        listRecyclerView.layoutManager = layoutManager
-
-        adapter.setClickListener {
-            onItemClick(it)
-        }
-    }
-
-    private fun onItemClick(loan: Loan) {
-        presenter.showLoanBottomSheet(loan, this)
-    }
-
-
     private fun updateEmptyView(b: Boolean, error: String) {
         val retry = { presenter.getLoans(true) }
-        if (adapter.itemCount == 0 || !networkDataShowing) {
+        if (adapter?.count == 0 || !networkDataShowing) {
             Timber.d("showing empty view")
             empty_view.show()
             empty_view_text.text = error
@@ -174,7 +139,7 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
     override fun onSaveInstanceState(outState: Bundle) {
         Timber.d("onSaveInstanceState")
 
-        outState.putParcelableArrayList(ARG_LOANS_KEY, adapter.getLoans())
+        outState.putParcelableArrayList(ARG_LOANS_KEY, adapter?.loans)
         outState.putParcelable(ARG_PAYMENTS_KEY, payments)
         outState.putBoolean(ARG_NETWORK_DATA_SHOWING, networkDataShowing)
 
@@ -199,27 +164,68 @@ class HomeLoanActivity : PresenterActivity<HomeLoanView, HomeLoanPresenter>(), H
         }
     }
 
+    fun refreshData() {
+        presenter.getLoans(firstLoad)
+        firstLoad = false
+    }
+
+    private var adapter: HomeLoanPagerAdapter? = null
+
+    private fun setupViewPager() {
+        this.adapter = HomeLoanPagerAdapter(null)
+        home_view_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                Timber.d("onPageScrolled - $position, positionOffset - $positionOffset, positionOffsetPixel - $positionOffsetPixels")
+                this@HomeLoanActivity.adapter?.scrolled(position, positionOffset, positionOffsetPixels)
+            }
+        })
+        home_view_pager.adapter = adapter
+
+//        adapter.setClickListener {
+//            onItemClick(it)
+//        }
+    }
+
+    private fun onItemClick(loan: Loan) {
+//        presenter.showLoanBottomSheet(loan, this)
+    }
+
+
     private var networkDataShowing = false
 
     override fun localDataRetrieved() {
         if (!networkDataShowing) {
-            local_data_refreshing.show()
+            local_data_refreshing_redesigned.show()
         }
     }
 
     override fun networkDataRetrieved() {
         networkDataShowing = true
 
-        local_data_refreshing.hide()
+        local_data_refreshing_redesigned.hide()
     }
+
+    private val create_loan_activity = 1
 
     companion object {
         val ARG_LOANS_KEY = "arg_loans_key"
         val ARG_PAYMENTS_KEY = "arg_payments_key"
         val ARG_NETWORK_DATA_SHOWING = "arg_network_data_showing"
-        val ARG_TOKEN_KEY = "token_key"
+        val ARG_TOKEN_KEY = "arg_token_key"
     }
 
+    lateinit var component: HomeLoanComponent
+
+    override fun injectDependencies(graph: AppComponent) {
+        this.component = graph.plus(HomeLoanModule(this))
+        this.component.injectTo(this)
+    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

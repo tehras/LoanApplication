@@ -16,6 +16,7 @@ import javax.inject.Inject
 @Suppress("unused")
 class MockHomeLoanPresenterImpl @Inject constructor(private val apiService: LoanApiService,
                                                     private val networkInteractor: NetworkInteractor) : RxPresenter<HomeLoanView>(), HomeLoanPresenter {
+
     override fun getLoans(showLoading: Boolean, forceNetworkCall: Boolean) {
         view?.stopLoading()
         view?.updateList(dummyLoans(), showLoading)

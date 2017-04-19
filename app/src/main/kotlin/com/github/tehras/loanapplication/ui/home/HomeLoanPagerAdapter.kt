@@ -13,6 +13,9 @@ import timber.log.Timber
 
 class HomeLoanPagerAdapter(var loans: ArrayList<Loan>?) : PagerAdapter() {
 
+    @Volatile
+    private var container: ViewGroup? = null
+
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         Timber.d("instantiate item")
 
@@ -22,6 +25,8 @@ class HomeLoanPagerAdapter(var loans: ArrayList<Loan>?) : PagerAdapter() {
         populateLayout(layout, loans?.get(position))
 
         container.addView(layout)
+
+        this.container = container
 
         return layout
     }
@@ -39,7 +44,16 @@ class HomeLoanPagerAdapter(var loans: ArrayList<Loan>?) : PagerAdapter() {
     }
 
     fun scrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        if (position >= 1) {
+            val view = this.container?.getChildAt(position - 1)
 
+            view?.let {
+                if (positionOffset <= 0.5f) {
+                    it.scaleX = 1.toFloat().minus(0.5f)
+                    it.scaleY = 1.toFloat().minus(0.5f)
+                }
+            }
+        }
     }
 
     override fun destroyItem(container: ViewGroup, position: Int, view: Any?) {

@@ -10,7 +10,6 @@ import android.view.ViewAnimationUtils
 import android.view.ViewTreeObserver
 import android.widget.LinearLayout
 import com.github.tehras.loanapplication.ui.home.HomeLoanActivity
-import com.github.tehras.loanapplication.ui.home.HomeLoanRedesignedActivity
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.android.synthetic.main.activity_add_loan.*
 import timber.log.Timber
@@ -154,7 +153,7 @@ fun AppCompatActivity.startLoggedInActivity(currentUser: FirebaseUser, func: () 
 
 private
 fun AppCompatActivity.startLoggedInActivity(token: String?) {
-    val intent = Intent(this, HomeLoanRedesignedActivity::class.java)
+    val intent = Intent(this, HomeLoanActivity::class.java)
 
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
     intent.putExtra(HomeLoanActivity.ARG_TOKEN_KEY, token)
